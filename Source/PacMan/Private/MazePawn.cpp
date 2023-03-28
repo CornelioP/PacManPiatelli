@@ -102,6 +102,45 @@ void AMazePawn::OnNodeReached()
 	CurrentGridCoords = TargetNode->GetNodePosition();
 	LastNode = TargetNode;
 	SetTargetNode(nullptr);
+
+	//Teleport node implement
+	const FVector2D Node_check = LastNode->GetNodePosition();
+
+	//Teleport in (17,0) if you are in (17,27) and you go right 
+	if (Node_check == FVector2D(17, 26) && LastValidInputDirection == FVector(0, 1, 0))
+	{
+
+		const FVector Location(1750.0f, 150.0f, GetActorLocation().Z);
+
+		//Set my data_structure variables for the new node
+		CurrentGridCoords = FVector2D(17.1);
+
+		LastNode = *(MazeGen->TileMap.Find(FVector2D(17, 1)));
+
+		SetNextNode(*(MazeGen->TileMap.Find(FVector2D(17, 1))));
+
+		SetTargetNode(NextNode);
+
+		SetActorLocation(Location);
+	}
+
+	//Teleport in (14,27) if you are in (14,0) and you go left 
+	if (Node_check == FVector2D(17, 1) && LastValidInputDirection == FVector(0, -1, 0))
+	{
+
+		const FVector Location(1750.0f, 2650.0f, GetActorLocation().Z);
+
+		//Set my data_structure variables for the new node
+		CurrentGridCoords = FVector2D(17.26);
+
+		LastNode = *(MazeGen->TileMap.Find(FVector2D(17, 26)));
+
+		SetNextNode(*(MazeGen->TileMap.Find(FVector2D(17, 26))));
+
+		SetTargetNode(NextNode);
+
+		SetActorLocation(Location);
+	}
 }
 
 void AMazePawn::SetTargetNode(APacManNode* Node)

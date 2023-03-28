@@ -15,6 +15,9 @@ APacManPawn::APacManPawn()
 	LastValidInputDirection = FVector(0, 0, 0);
 	////posizione iniziale  del pawn nelle coordinate di griglia (1,1)
 	CurrentGridCoords = FVector2D(1, 1);
+
+	//Set Pawn Speed
+	this->NormalMovementSpeed = 400.0;
 }
 void APacManPawn::BeginPlay()
 {

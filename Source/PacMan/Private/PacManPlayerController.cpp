@@ -6,6 +6,7 @@
 APacManPlayerController::APacManPlayerController()
 {
 	bShowMouseCursor = true;
+
 }
 
 void APacManPlayerController::BeginPlay()
