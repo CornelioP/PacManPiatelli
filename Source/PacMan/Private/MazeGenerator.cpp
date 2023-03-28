@@ -24,6 +24,8 @@ constexpr int MapSizeY = 29;
 // E - Ghost Exit
 
 static char Map[MapSizeX][MapSizeY] = {
+
+
 	"############################",
 	"############################",
 	"############################",
@@ -136,16 +138,16 @@ APacManNode* AMazeGenerator::SpawnNodeActorById(char CharId, FVector Position) c
 
 	//Check to verify if it should spawn also a point actor
 
-	Node_tmp = GetWorld()->SpawnActor<APacManNode>(ClassToSpawn, Position, FRotator::ZeroRotator);
-
 	if (ClassToSpawn == PointNode)
 	{
-		//GetWorld()->SpawnActor<APointActor>(Point, Position, FRotator::ZeroRotator);
+		GetWorld()->SpawnActor<APointActor>(Point, Position, FRotator::ZeroRotator);
 	}
 	if (ClassToSpawn == PowerNode)
 	{
-		//GetWorld()->SpawnActor<APointActor>(PowerPoint, Position, FRotator::ZeroRotator);
+		GetWorld()->SpawnActor<APointActor>(PowerPoint, Position, FRotator::ZeroRotator);
 	}
+
+	Node_tmp = GetWorld()->SpawnActor<APacManNode>(ClassToSpawn, Position, FRotator::ZeroRotator);
 
 
 	return Node_tmp;

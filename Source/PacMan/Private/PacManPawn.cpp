@@ -49,6 +49,23 @@ void APacManPawn::SetTargetNode(APacManNode* Node)
 
 void APacManPawn::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
+	const auto Point = Cast<APointActor>(OtherActor);
+	if (Point)
+	{
+		//Hide actor and disable his tick  
+		Point->HideInGame = true;
+		Point->DisableActor();
+
+		//Increment point when PacMan collide with PointActor
+		//PointCounter += 1;
+		//GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, FString::Printf(TEXT("Point increase %f"), PointCounter)); \
+
+			//When point counter reach max call end game 
+			//if (PointCounter == 237)
+			//{
+			//	UKismetSystemLibrary::QuitGame(GetWorld(), UGameplayStatics::GetPlayerController(GetWorld(), 0), EQuitPreference::Background, false);
+			//}
+	}
 }
 
 void APacManPawn::Tick(float DeltaTime)

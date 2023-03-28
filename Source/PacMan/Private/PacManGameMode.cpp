@@ -17,7 +17,7 @@ void APacManGameMode::BeginPlay()
 
 	if (MazeGeneratorClass != nullptr)
 	{
-		// spawn della griglia
+		//Spawn Maze
 		GMaze = GetWorld()->SpawnActor<AMazeGenerator>(MazeGeneratorClass, GridPos, FRotationMatrix::MakeFromX(FVector(0, 0, 0)).Rotator());
 	};
 }

@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "PacManNode.h"
-//#include "PointActor.h"
+#include "PointActor.h"
 #include "GameFramework/Actor.h"
 #include "MazeGenerator.generated.h"
 
@@ -78,11 +78,11 @@ private:
 	UPROPERTY(EditDefaultsOnly)
 		FVector SpawnOffset;
 
-	//UPROPERTY(EditDefaultsOnly, Category = "Point")
-		//TSubclassOf<APointActor> Point;
+	UPROPERTY(EditDefaultsOnly, Category = "Point")
+		TSubclassOf<APointActor> Point;
 
-	//UPROPERTY(EditDefaultsOnly, Category = "Point")
-		//TSubclassOf<APointActor> PowerPoint;
+	UPROPERTY(EditDefaultsOnly, Category = "Point")
+		TSubclassOf<APointActor> PowerPoint;
 
 
 
