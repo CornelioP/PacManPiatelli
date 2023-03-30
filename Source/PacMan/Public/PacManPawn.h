@@ -25,6 +25,9 @@ class PACMAN_API APacManPawn : public AMazePawn
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+	UPROPERTY(EditAnywhere,BlueprintReadWrite ,Category = "Variable" ,meta = (AllowPrivateAccess = true))
+		float PointCounter;
+
 protected:
 	virtual void BeginPlay() override;
 	virtual void HandleMovement() override;

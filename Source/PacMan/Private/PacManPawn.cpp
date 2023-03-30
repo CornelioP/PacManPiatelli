@@ -57,8 +57,8 @@ void APacManPawn::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* Ot
 		Point->DisableActor();
 
 		//Increment point when PacMan collide with PointActor
-		//PointCounter += 1;
-		//GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, FString::Printf(TEXT("Point increase %f"), PointCounter)); \
+	    PointCounter += 1;
+	
 
 			//When point counter reach max call end game 
 			//if (PointCounter == 237)
