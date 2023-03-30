@@ -4,8 +4,6 @@
 
 #include "CoreMinimal.h"
 #include "MazePawn.h"
-#include "Kismet/GameplayStatics.h"
-#include "PacManPawn.h"
 #include "GhostPawn.generated.h"
 
 /**

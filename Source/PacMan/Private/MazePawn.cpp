@@ -2,6 +2,8 @@
 
 
 #include "MazePawn.h"
+#include "PacManGameMode.h"\
+
 
 // Sets default values
 AMazePawn::AMazePawn()

@@ -4,8 +4,10 @@
 
 #include "CoreMinimal.h"
 #include "MazeGenerator.h"
+#include "Blinky.h"
 #include "GameFramework/GameModeBase.h"
 #include "PacManGameMode.generated.h"
+
 
 /**
  * 
@@ -25,6 +27,15 @@ public:
 	//Puntatore ad un oggetto MazeGenerator
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 		AMazeGenerator* GMaze;
+
+	//Subclass Blinky
+	UPROPERTY(EditAnyWhere)
+
+		TSubclassOf<ABlinky> Blinky;
+
+	UPROPERTY(EditAnyWhere)
+
+		ABlinky* BlinkyP;
 
 	APacManGameMode();
 

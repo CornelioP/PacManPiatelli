@@ -5,7 +5,6 @@
 #include "CoreMinimal.h"
 #include "PacManNode.h"
 #include "MazeGenerator.h"
-#include "PacManGameMode.h"
 #include "Components/BoxComponent.h"
 #include "GameFramework/Pawn.h"
 #include "MazePawn.generated.h"

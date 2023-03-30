@@ -2,6 +2,8 @@
 
 
 #include "GhostPawn.h"
+#include "Kismet/GameplayStatics.h"
+#include "PacManPawn.h"
 
 AGhostPawn::AGhostPawn()
 {
