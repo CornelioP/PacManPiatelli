@@ -7,6 +7,7 @@
 #include "MazeGenerator.h"
 #include "PacManPlayerController.h"
 #include "PacManNode.h"
+#include "GhostBaseNode.h"
 #include "PacManPawn.generated.h"
 
 /**
@@ -27,6 +28,11 @@ class PACMAN_API APacManPawn : public AMazePawn
 
 	UPROPERTY(EditAnywhere,BlueprintReadWrite ,Category = "Variable" ,meta = (AllowPrivateAccess = true))
 		float PointCounter;
+
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<AGhostBaseNode> GhostClass;
+
+	AGhostBaseNode* GhostNode;
 
 protected:
 	virtual void BeginPlay() override;

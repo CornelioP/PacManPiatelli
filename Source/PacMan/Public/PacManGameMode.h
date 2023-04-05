@@ -33,7 +33,7 @@ public:
 
 		TSubclassOf<ABlinky> Blinky;
 
-	UPROPERTY(EditAnyWhere)
+	UPROPERTY(VisibleAnywhere)
 
 		ABlinky* BlinkyP;
 

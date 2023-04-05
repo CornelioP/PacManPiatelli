@@ -21,5 +21,5 @@ void APacManGameMode::BeginPlay()
 		GMaze = GetWorld()->SpawnActor<AMazeGenerator>(MazeGeneratorClass, GridPos, FRotationMatrix::MakeFromX(FVector(0, 0, 0)).Rotator());
 	};
 
-	GetWorld()->SpawnActor<ABlinky>(Blinky, FVector(27550.0f,26550.0f, 50.0f), FRotator(0, 0, 0));
+	//BlinkyP = GetWorld()->SpawnActor<ABlinky>(Blinky, FVector(2750.0f,2650.0f, 30.0f), FRotator(0, 0, 0));
 }

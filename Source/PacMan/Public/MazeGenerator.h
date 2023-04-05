@@ -8,6 +8,21 @@
 #include "GameFramework/Actor.h"
 #include "MazeGenerator.generated.h"
 
+
+
+struct FDirNode
+{
+	APacManNode* Node;
+	FVector Dir;
+
+	FDirNode(APacManNode* Node, const FVector& Dir) : Node(Node), Dir(Dir)
+	{
+	}
+};
+
+
+
+
 UCLASS()
 class PACMAN_API AMazeGenerator : public AActor
 {
@@ -99,7 +114,7 @@ public:
 	//Data la posizione 2D ritorna un Node
 	TMap<FVector2D, APacManNode*> TileMap;
 
-	TMap<FVector2D, APacManNode*> GetTileMAp();
+	TMap<FVector2D, APacManNode*> GetTileMap();
 
 	// return a (x,y) position given a hit (click) on a field tile
 	FVector2D GetPosition(const FHitResult& Hit);
@@ -124,12 +139,17 @@ public:
 	APacManNode* GetNextNode(const FVector2D StartCoords, FVector InputDir);
 
 	FVector2D GetTwoDOfVector(FVector DDDVector);
+	FVector GetThreeDOfTwoDVector(FVector2D DDDVector);
 
 	//Function that return the array of walkable near node
 
-	TArray<APacManNode*> NearPossibleNode(APacManNode* NodeInp);
+	TArray<FDirNode> NearPossibleNode(const APacManNode* NodeInp);
 
 	//Function that return the nearst possible node given target destination
 
-	APacManNode* ShortestNodeToTarget(APacManNode* NodeInp, APacManNode* TargetNode);
+	APacManNode* ShortestNodeToTarget(const FVector2D StartCoords, const FVector2D TargetCoords, FVector IgnoredDir);
+
+	bool IsNodeReachableAndNextToCurrentPosition(const FVector2D CurrentCoordinates, const FVector2D TargetCoords);
+
+	APacManNode* GetNodeByCoords(const FVector2D Coords);
 };

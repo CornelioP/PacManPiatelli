@@ -15,6 +15,7 @@ class PACMAN_API ABlinky : public AGhostPawn
 	GENERATED_BODY()
 	
 public:
+
 	ABlinky();
 
 	virtual APacManNode* GetPlayerRelativeTarget() override;

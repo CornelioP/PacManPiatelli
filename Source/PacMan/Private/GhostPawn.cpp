@@ -9,6 +9,7 @@ AGhostPawn::AGhostPawn()
 {
 	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
+	
 }
 
 void AGhostPawn::BeginPlay()
@@ -17,6 +18,7 @@ void AGhostPawn::BeginPlay()
 	FVector2D StartNode = MazeGen->GetXYPositionByRelativeLocation(GetActorLocation());
 	LastNode = MazeGen->TileMap[StartNode];
 	Player = Cast<APacManPawn>(UGameplayStatics::GetActorOfClass(GetWorld(), APacManPawn::StaticClass()));
+	SetSpeed(400);
 }
 
 void AGhostPawn::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
@@ -63,12 +65,19 @@ APacManNode* AGhostPawn::GetPlayerRelativeTarget()
 
 void AGhostPawn::SetGhostTarget()
 {
-	APacManNode* Target = GetPlayerRelativeTarget();
-
-	APacManNode* NodeToMove = MazeGen->ShortestNodeToTarget(this->GetLastNode(), Target);
-
-	if (NodeToMove)
+	const APacManNode* Target = GetPlayerRelativeTarget();
+	if (!Target)
 	{
-		this->SetNextNodeByDir(FVector(MazeGen->GetTwoDOfVector(NodeToMove->GetActorLocation()), 50.0f));
+		Target = GetPlayer()->GetLastNode();
+	}
+
+	APacManNode* PossibleNode = MazeGen->ShortestNodeToTarget(this->GetLastNodeCoords(), Target->GetNodePosition(), -(this->GetLastValidDirection()));
+
+	const FVector Dimensions(60, 60, 20);
+	DrawDebugBox(GetWorld(), PossibleNode->GetNodeCoordinates(), Dimensions, FColor::Red);
+
+	if (PossibleNode)
+	{
+		this->SetNextNodeByDir(MazeGen->GetThreeDOfTwoDVector(PossibleNode->GetNodePosition() - this->GetLastNodeCoords()), true);
 	}
 }

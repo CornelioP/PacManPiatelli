@@ -41,10 +41,10 @@ static char Map[MapSizeX][MapSizeY] = {
 	"######o## ######## ##o######",
 	"######o## ######## ##o######",
 	"######o## 12 RE 34 ##o######",
-	"######o## ###  ### ##o######",
-	"######o## #      # ##o######",
-	"T     o   #      #   o     T",
-	"######o## #      # ##o######",
+	"######o## ###II### ##o######",
+	"######o## #IIIIII# ##o######",
+	"T     o   #IIIIII#   o     T",
+	"######o## #IIIIII# ##o######",
 	"######o## ######## ##o######",
 	"######o##          ##o######",
 	"######o##### ## #####o######",
@@ -154,7 +154,7 @@ APacManNode* AMazeGenerator::SpawnNodeActorById(char CharId, FVector Position) c
 }
 
 
-TMap<FVector2D, APacManNode*> AMazeGenerator::GetTileMAp()
+TMap<FVector2D, APacManNode*> AMazeGenerator::GetTileMap()
 {
 	return TileMap;
 }
@@ -201,7 +201,7 @@ APacManNode* AMazeGenerator::GetNextNode(const FVector2D StartCoords, FVector In
 	const float ClampedX = FMath::Clamp(RequestedX, 0.f, MapSizeX - 1);
 	const float ClampedY = FMath::Clamp(RequestedY, 0.f, MapSizeY - 2);
 
-	APacManNode* PossibleNode = GetTileMAp()[FVector2D(ClampedX, ClampedY)];
+	APacManNode* PossibleNode = GetTileMap()[FVector2D(ClampedX, ClampedY)];
 
 	if (RequestedX > ClampedX || RequestedX < 0)
 	{
@@ -221,53 +221,66 @@ FVector2D AMazeGenerator::GetTwoDOfVector(FVector DDDVector)
 	return FVector2D(DDDVector.X, DDDVector.Y);;
 }
 
+FVector AMazeGenerator::GetThreeDOfTwoDVector(FVector2D DDDVector)
+{
+	return FVector(DDDVector.X, DDDVector.Y, 0);
+}
+
 
 
 //Functions to handle Ghost movement
 
 
-TArray<APacManNode*> AMazeGenerator::NearPossibleNode(APacManNode* NodeInp)
+TArray<FDirNode> AMazeGenerator::NearPossibleNode(const APacManNode* NodeInp)
 {
-	TArray<APacManNode*> PossibleNodes;
 
-	if (IsNodeValidForWalk(GetNextNode(NodeInp->GetNodePosition(), FVector::ForwardVector)))
+	TArray<FDirNode> Vec;
+	if (NodeInp)
 	{
-		PossibleNodes.Add(GetNextNode(NodeInp->GetNodePosition(), FVector::ForwardVector));
+		Vec.Add(FDirNode(GetNextNode(NodeInp->GetNodePosition(), FVector::ForwardVector), FVector::ForwardVector));
+		Vec.Add(FDirNode(GetNextNode(NodeInp->GetNodePosition(), FVector::RightVector), FVector::RightVector));
+		Vec.Add(FDirNode(GetNextNode(NodeInp->GetNodePosition(), -FVector::ForwardVector), -FVector::ForwardVector));
+		Vec.Add(FDirNode(GetNextNode(NodeInp->GetNodePosition(), FVector::LeftVector), FVector::LeftVector));
 	}
-	else if (IsNodeValidForWalk(GetNextNode(NodeInp->GetNodePosition(), FVector::RightVector)))
-	{
-		PossibleNodes.Add(GetNextNode(NodeInp->GetNodePosition(), FVector::RightVector));
-	}
-	else if (IsNodeValidForWalk(GetNextNode(NodeInp->GetNodePosition(), -FVector::ForwardVector)))
-	{
-		PossibleNodes.Add(GetNextNode(NodeInp->GetNodePosition(), -FVector::ForwardVector));
-	}
-	else if (IsNodeValidForWalk(GetNextNode(NodeInp->GetNodePosition(), FVector::LeftVector)))
-	{
-		PossibleNodes.Add(GetNextNode(NodeInp->GetNodePosition(), FVector::LeftVector));
-	}
-
-	return PossibleNodes;
+	return Vec;
 }
 
-APacManNode* AMazeGenerator::ShortestNodeToTarget(APacManNode* NodeInp, APacManNode* TargetNode)
+APacManNode* AMazeGenerator::ShortestNodeToTarget(const FVector2D StartCoords, const FVector2D TargetCoords, FVector IgnoredDir)
 {
-	TArray<APacManNode*> PossibleNodes = NearPossibleNode(NodeInp);
+	const TArray<FDirNode> PossibleNodes = NearPossibleNode(GetNodeByCoords(StartCoords));
 	APacManNode* ShortestNode = nullptr;
 	float Distance = 100000000000000.0;
-	for (int i = 0; i < PossibleNodes.Num(); i++)
+
+	for (FDirNode FDirNode : PossibleNodes)
 	{
-		float Distance_tmp = FVector2D::Distance(PossibleNodes[i]->GetNodePosition(), TargetNode->GetNodePosition());
+		if (FDirNode.Node == nullptr || FDirNode.Dir == IgnoredDir || FDirNode.Node->EIsLegal == NotWalkable)
+			continue;
 
-		if (Distance_tmp < Distance)
+		const float TempDist = FVector2D::Distance(FDirNode.Node->GetNodePosition(), TargetCoords);
+		if (TempDist < Distance)
 		{
-			Distance = Distance_tmp;
-			ShortestNode = PossibleNodes[i];
+			Distance = TempDist;
+			ShortestNode = FDirNode.Node;
 		}
-
-
 	}
 
 	return ShortestNode;
 
+}
+
+bool AMazeGenerator::IsNodeReachableAndNextToCurrentPosition(const FVector2D CurrentCoordinates, const FVector2D TargetCoords)
+{
+	const float DistX = FMath::Abs(CurrentCoordinates.X - TargetCoords.X);
+	const float DistY = FMath::Abs(CurrentCoordinates.Y - TargetCoords.Y);
+	if (DistX > 1 || DistY > 1) return false;
+	APacManNode* const N = GetNodeByCoords(TargetCoords);
+	if (N && N->EIsLegal == NotWalkable) return false;
+	return true;
+}
+
+APacManNode* AMazeGenerator::GetNodeByCoords(const FVector2D Coords)
+{
+	if (Coords.X > MapSizeX - 1 || Coords.Y > MapSizeY - 2) return nullptr;
+	if (Coords.X < 0 || Coords.Y < 0) return nullptr;
+	return GetTileMap()[FVector2D(Coords.X, Coords.Y)];
 }

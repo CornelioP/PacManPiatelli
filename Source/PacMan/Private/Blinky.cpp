@@ -6,6 +6,7 @@
 ABlinky::ABlinky()
 {
 	CurrentGridCoords = FVector2D(27, 26);
+	
 }
 
 APacManNode* ABlinky::GetPlayerRelativeTarget()

@@ -40,7 +40,16 @@ void APacManPawn::HandleMovement()
 		}
 		SetNodeGeneric(LastValidInputDirection);
 	}
+
+	//if (TargetNode == GhostNode)
+	//{
+		//GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, FString::Printf(TEXT("FUNZIONA PORCODIO ?????")));
+		//SetTargetNode(nullptr);
+		//SetNextNode(nullptr);
+
+	//}
 }
+
 
 void APacManPawn::SetTargetNode(APacManNode* Node)
 {
@@ -50,6 +59,8 @@ void APacManPawn::SetTargetNode(APacManNode* Node)
 void APacManPawn::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
 	const auto Point = Cast<APointActor>(OtherActor);
+
+
 	if (Point)
 	{
 		//Hide actor and disable his tick  
