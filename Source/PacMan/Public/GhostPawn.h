@@ -6,9 +6,9 @@
 #include "MazePawn.h"
 #include "GhostPawn.generated.h"
 
-/**
- * 
- */
+UENUM()
+enum EStates { Chase, Scatter, Frightened };
+
 UCLASS()
 class PACMAN_API AGhostPawn : public AMazePawn
 {
@@ -25,8 +25,6 @@ protected:
 	virtual void OnNodeReached() override;
 
 private:
-	UPROPERTY(VisibleAnywhere)
-		class APacManPawn* Player;
 
 public:
 	virtual void Tick(float DeltaTime) override;
@@ -39,7 +37,18 @@ public:
 
 	UFUNCTION()
 		virtual APacManNode* GetPlayerRelativeTarget();
+	
+	UPROPERTY(VisibleAnywhere)
+		class APacManPawn* Player;
+
+	UPROPERTY(EditAnywhere)
+		TEnumAsByte<EStates> EStates = Chase;
 
 	void SetGhostTarget();
+
+	void EnterFrightenedState();
+
+	void TeleportToHome();
+
 };
 

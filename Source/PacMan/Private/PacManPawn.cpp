@@ -2,6 +2,9 @@
 
 
 #include "PacManPawn.h"
+#include "Blinky.h"
+#include "Inky.h"
+#include "Kismet/GameplayStatics.h"
 
 APacManPawn::APacManPawn()
 {
@@ -17,7 +20,11 @@ APacManPawn::APacManPawn()
 	CurrentGridCoords = FVector2D(1, 1);
 
 	//Set Pawn Speed
-	this->NormalMovementSpeed = 400.0;
+	this->NormalMovementSpeed = 320.0;
+
+	Blinky = Cast<ABlinky>(UGameplayStatics::GetActorOfClass(GetWorld(), ABlinky::StaticClass()));
+
+	Inky = Cast<AInky>(UGameplayStatics::GetActorOfClass(GetWorld(), AInky::StaticClass()));
 }
 void APacManPawn::BeginPlay()
 {
@@ -59,7 +66,7 @@ void APacManPawn::SetTargetNode(APacManNode* Node)
 void APacManPawn::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
 	const auto Point = Cast<APointActor>(OtherActor);
-
+	const auto PowerPoint = Cast<APowerPoint>(OtherActor);
 
 	if (Point)
 	{
@@ -69,7 +76,26 @@ void APacManPawn::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* Ot
 
 		//Increment point when PacMan collide with PointActor
 	    PointCounter += 1;
-	
+	    
+		//Slow down for 1/60 of second
+		
+		//float PointEatenTime = 0.01666;
+
+		//Slowdown PacMan at 71% if in Normal mode
+		//if (PacManStates == Normal)
+		//{
+		//	this->CurrentMovementSpeed = 284;
+		//	GetWorld()->GetTimerManager().SetTimer(FrightnedTimer, this, &APacManPawn::PointEatenExit, PointEatenTime, false);
+		//}
+
+		//SlowDown PacMan at 79% if in Frightened mode 
+		//else if (PacManStates == FrightenedP)
+		//{
+		//	this->CurrentMovementSpeed = 316;
+		//	GetWorld()->GetTimerManager().PauseTimer(FrightnedTimer);
+		//	GetWorld()->GetTimerManager().SetTimer(FrightnedTimer, this, &APacManPawn::PointEatenExit, PointEatenTime, false);
+		//}
+
 
 			//When point counter reach max call end game 
 			//if (PointCounter == 237)
@@ -77,6 +103,57 @@ void APacManPawn::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* Ot
 			//	UKismetSystemLibrary::QuitGame(GetWorld(), UGameplayStatics::GetPlayerController(GetWorld(), 0), EQuitPreference::Background, false);
 			//}
 	}
+
+	if (PowerPoint)
+	{
+		PowerPoint->HideInGame = true;
+		PowerPoint->DisableActor();
+
+		//When a power point is eaten set Ghosts to Frightened mode 
+
+		FrightenedEnter();
+	}
+
+
+}
+
+void APacManPawn::Eat(AGhostPawn* Ghost)
+{ 
+	//When a ghost is eaten teleport it to ghost's house
+	Ghost->TeleportToHome();
+}
+
+void APacManPawn::FrightenedEnter()
+{
+	GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, FString::Printf(TEXT("ENTRATO IN STATO FRIGHTENED")));
+
+	this->PacManStates = FrightenedP;
+	Blinky->EnterFrightenedState();
+	Inky->EnterFrightenedState();
+
+	this->CurrentMovementSpeed = 360;
+
+	float FrightenedTime = 6.0;
+
+	GetWorld()->GetTimerManager().SetTimer(FrightnedTimer, this, &APacManPawn::FrightenedExit, FrightenedTime, false);
+}
+
+void APacManPawn::FrightenedExit()
+{
+	this->CurrentMovementSpeed = 320;
+
+	Blinky->EStates = Chase;
+	Inky->EStates = Chase;
+
+	GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, FString::Printf(TEXT("USCITO STATO FRIGHTENED")));
+}
+
+void APacManPawn::PointEatenExit()
+{
+	if(PacManStates == Normal)
+	   this->CurrentMovementSpeed = 320;
+	else if (PacManStates == FrightenedP)
+		this->CurrentMovementSpeed = 360;
 }
 
 void APacManPawn::Tick(float DeltaTime)
