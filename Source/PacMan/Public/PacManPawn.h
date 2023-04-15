@@ -13,9 +13,6 @@
 #include "PacManPawn.generated.h"
 
 
-UENUM()
-
-enum EPacManStates { Normal,FrightenedP };
 
 UCLASS()
 class PACMAN_API APacManPawn : public AMazePawn
@@ -44,27 +41,10 @@ protected:
 		int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult) override;
  
 public:
-	UPROPERTY(EditAnywhere,BlueprintReadWrite ,Category = "Variable" ,meta = (AllowPrivateAccess = true))
-		float PointCounter;
-	
-	UPROPERTY(EditAnywhere)
-		class ABlinky* Blinky;
-
-	UPROPERTY(EditAnywhere)
-		class AInky* Inky;
-
-	UPROPERTY(EditAnywhere)
-		TEnumAsByte<EPacManStates> PacManStates = Normal;
     
 	void Eat(AGhostPawn* Ghost);
 
-	FTimerHandle FrightnedTimer;
-
-	FTimerHandle PointEaten;
-
-	void FrightenedEnter();
-
-	void FrightenedExit();
-
 	void PointEatenExit();
+
+	void Respawn();
 };

@@ -115,7 +115,7 @@ void AMazePawn::OnNodeReached()
 		const FVector Location(1750.0f, 150.0f, GetActorLocation().Z);
 
 		//Set my data_structure variables for the new node
-		CurrentGridCoords = FVector2D(17.1);
+		CurrentGridCoords = FVector2D(17,1);
 
 		LastNode = *(MazeGen->TileMap.Find(FVector2D(17, 1)));
 
@@ -127,13 +127,13 @@ void AMazePawn::OnNodeReached()
 	}
 
 	//Teleport in (14,27) if you are in (14,0) and you go left 
-	if (Node_check == FVector2D(17, 1) && LastValidInputDirection == FVector(0, -1, 0))
+	if (Node_check == FVector2D(17,1) && LastValidInputDirection == FVector(0, -1, 0))
 	{
 
 		const FVector Location(1750.0f, 2650.0f, GetActorLocation().Z);
 
 		//Set my data_structure variables for the new node
-		CurrentGridCoords = FVector2D(17.26);
+		CurrentGridCoords = FVector2D(17,26);
 
 		LastNode = *(MazeGen->TileMap.Find(FVector2D(17, 26)));
 

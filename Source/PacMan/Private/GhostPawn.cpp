@@ -4,6 +4,7 @@
 #include "GhostPawn.h"
 #include "Kismet/GameplayStatics.h"
 #include "PacManPawn.h"
+#include "PacManGameMode.h"
 
 AGhostPawn::AGhostPawn()
 {
@@ -18,6 +19,7 @@ void AGhostPawn::BeginPlay()
 	FVector2D StartNode = MazeGen->GetXYPositionByRelativeLocation(GetActorLocation());
 	LastNode = MazeGen->TileMap[StartNode];
 	Player = Cast<APacManPawn>(UGameplayStatics::GetActorOfClass(GetWorld(), APacManPawn::StaticClass()));
+  
 	SetSpeed(300);
 }
 
@@ -28,9 +30,14 @@ void AGhostPawn::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* Oth
 	if (PacMan)
 	{
 		//When in Frightened state eat the Ghost
-		if (EStates == Frightened)
+		if (GameMode->EStates == Frightened)
 		PacMan->Eat(this);
-	
+
+		else
+		{   
+			//If not in Frightened mode Ghost kill Pacman
+			PacMan->Respawn();
+		}
 	}
 }
 
@@ -42,7 +49,7 @@ void AGhostPawn::OnNodeReached()
 void AGhostPawn::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	if (this->GetTargetNode() == nullptr && EStates != Frightened)
+	if (this->GetTargetNode() == nullptr && GameMode->EStates != Frightened)
 	{
 		SetGhostTarget();
 	}
@@ -77,7 +84,6 @@ void AGhostPawn::SetGhostTarget()
 
 	APacManNode* PossibleNode = MazeGen->ShortestNodeToTarget(this->GetLastNodeCoords(), Target->GetNodePosition(), -(this->GetLastValidDirection()));
 
-	const FVector Dimensions(60, 60, 20);
 
 	if (PossibleNode)
 	{
@@ -85,31 +91,18 @@ void AGhostPawn::SetGhostTarget()
 	}
 }
 
-void AGhostPawn::EnterFrightenedState()
+
+void AGhostPawn::TeleportToGhostBase()
 {
-	//APacManNode* RandomNode = nullptr;
-	//double RandX = rand();
-	//double RandY = rand();
-	//RandomNode->SetNodePosition(RandX, RandY);
-	//SetTargetNode(RandomNode);
+	const FVector GhostBase(1750.0f, 1450.0f, 51.0f);
 
-	EStates = Frightened;
+	CurrentGridCoords = FVector2D(17, 14);
 
+	LastNode = *(MazeGen->TileMap.Find(FVector2D(17, 14)));
 
-}
-
-void AGhostPawn::TeleportToHome()
-{
-	const FVector Location(2050.0f, 1450.0f, GetActorLocation().Z);
-
-	//Set my data_structure variables for the new node
-	CurrentGridCoords = FVector2D(20.14);
-
-	LastNode = *(MazeGen->TileMap.Find(FVector2D(20,14)));
-
-	SetNextNode(*(MazeGen->TileMap.Find(FVector2D(20,14))));
+	SetNextNode(*(MazeGen->TileMap.Find(FVector2D(17, 14))));
 
 	SetTargetNode(NextNode);
 
-	SetActorLocation(Location);
+	SetActorLocation(GhostBase);
 }

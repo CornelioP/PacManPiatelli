@@ -50,10 +50,7 @@ protected:
 
 	void SetLastValidDirection(FVector Dir);
 
-	UPROPERTY(EditAnywhere, Category = "Movement")
-		float CurrentMovementSpeed = 100.0f;
-	UPROPERTY(EditAnywhere, Category = "Movement")
-		float NormalMovementSpeed = 100.0f;
+
 	UPROPERTY(EditAnywhere)
 		float AcceptedDistance = 4.f;
 
@@ -82,6 +79,7 @@ protected:
 
 	UPROPERTY(EditAnywhere)
 		UStaticMeshComponent* StaticMesh;
+
 	UPROPERTY(EditAnywhere)
 		UBoxComponent* Collider;
 
@@ -95,6 +93,10 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+	UPROPERTY(EditAnywhere, Category = "Movement")
+		float CurrentMovementSpeed = 100.0f;
 
+	UPROPERTY(EditAnywhere, Category = "Movement")
+		float NormalMovementSpeed = 100.0f;
 
 };

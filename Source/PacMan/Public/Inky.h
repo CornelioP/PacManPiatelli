@@ -13,7 +13,8 @@ UCLASS()
 class PACMAN_API AInky : public AGhostPawn
 {
 	GENERATED_BODY()
-	
+public:	
+	virtual void TeleportToHome();
 
 protected:
 	virtual void OnNodeReached() override;

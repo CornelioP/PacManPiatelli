@@ -6,8 +6,7 @@
 #include "MazePawn.h"
 #include "GhostPawn.generated.h"
 
-UENUM()
-enum EStates { Chase, Scatter, Frightened };
+
 
 UCLASS()
 class PACMAN_API AGhostPawn : public AMazePawn
@@ -41,14 +40,11 @@ public:
 	UPROPERTY(VisibleAnywhere)
 		class APacManPawn* Player;
 
-	UPROPERTY(EditAnywhere)
-		TEnumAsByte<EStates> EStates = Chase;
 
 	void SetGhostTarget();
 
-	void EnterFrightenedState();
 
-	void TeleportToHome();
+	void TeleportToGhostBase();
 
 };
 

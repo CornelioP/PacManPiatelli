@@ -2,8 +2,7 @@
 
 
 #include "PacManPawn.h"
-#include "Blinky.h"
-#include "Inky.h"
+#include "PacManGameMode.h"
 #include "Kismet/GameplayStatics.h"
 
 APacManPawn::APacManPawn()
@@ -19,12 +18,7 @@ APacManPawn::APacManPawn()
 	////posizione iniziale  del pawn nelle coordinate di griglia (1,1)
 	CurrentGridCoords = FVector2D(1, 1);
 
-	//Set Pawn Speed
-	this->NormalMovementSpeed = 320.0;
-
-	Blinky = Cast<ABlinky>(UGameplayStatics::GetActorOfClass(GetWorld(), ABlinky::StaticClass()));
-
-	Inky = Cast<AInky>(UGameplayStatics::GetActorOfClass(GetWorld(), AInky::StaticClass()));
+	NormalMovementSpeed = 320;
 }
 void APacManPawn::BeginPlay()
 {
@@ -75,7 +69,7 @@ void APacManPawn::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* Ot
 		Point->DisableActor();
 
 		//Increment point when PacMan collide with PointActor
-	    PointCounter += 1;
+	    GameMode->PointCounter += 1;
 	    
 		//Slow down for 1/60 of second
 		
@@ -109,9 +103,9 @@ void APacManPawn::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* Ot
 		PowerPoint->HideInGame = true;
 		PowerPoint->DisableActor();
 
-		//When a power point is eaten set Ghosts to Frightened mode 
+		//When a power point is eaten enter Frightened mode 
 
-		FrightenedEnter();
+		GameMode->EnterFrightenedMode();
 	}
 
 
@@ -120,40 +114,49 @@ void APacManPawn::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* Ot
 void APacManPawn::Eat(AGhostPawn* Ghost)
 { 
 	//When a ghost is eaten teleport it to ghost's house
-	Ghost->TeleportToHome();
+	const FVector GhostBase = FVector(1450.0f, 1250.0f, 51.0f);
+	Ghost->TeleportToGhostBase();
 }
 
-void APacManPawn::FrightenedEnter()
-{
-	GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, FString::Printf(TEXT("ENTRATO IN STATO FRIGHTENED")));
 
-	this->PacManStates = FrightenedP;
-	Blinky->EnterFrightenedState();
-	Inky->EnterFrightenedState();
 
-	this->CurrentMovementSpeed = 360;
 
-	float FrightenedTime = 6.0;
-
-	GetWorld()->GetTimerManager().SetTimer(FrightnedTimer, this, &APacManPawn::FrightenedExit, FrightenedTime, false);
-}
-
-void APacManPawn::FrightenedExit()
-{
-	this->CurrentMovementSpeed = 320;
-
-	Blinky->EStates = Chase;
-	Inky->EStates = Chase;
-
-	GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, FString::Printf(TEXT("USCITO STATO FRIGHTENED")));
-}
 
 void APacManPawn::PointEatenExit()
 {
-	if(PacManStates == Normal)
-	   this->CurrentMovementSpeed = 320;
-	else if (PacManStates == FrightenedP)
-		this->CurrentMovementSpeed = 360;
+	//if(PacManStates == Normal)
+	 //  this->CurrentMovementSpeed = 320;
+	//else if (PacManStates == FrightenedP)
+	//	this->CurrentMovementSpeed = 360;
+}
+
+void APacManPawn::Respawn()
+{
+	//Decrease life counter
+
+
+
+	//Teleport PacMan to spawn point
+
+	const FVector Spawn = FVector(850.0f, 1450.0f, GetActorLocation().Z);
+
+	CurrentGridCoords = FVector2D(8,14);
+
+	LastNode = *(MazeGen->TileMap.Find(FVector2D(8, 14)));
+
+	SetNextNode(*(MazeGen->TileMap.Find(FVector2D(8, 14))));
+
+	SetTargetNode(NextNode);
+
+	SetActorLocation(Spawn);
+
+	//Teleport Ghosts to Spawn Point
+ 	
+
+
+
+
+
 }
 
 void APacManPawn::Tick(float DeltaTime)

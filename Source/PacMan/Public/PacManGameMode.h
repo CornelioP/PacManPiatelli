@@ -5,13 +5,18 @@
 #include "CoreMinimal.h"
 #include "MazeGenerator.h"
 #include "Blinky.h"
+#include "Inky.h"
+#include "PacManPawn.h"
 #include "GameFramework/GameModeBase.h"
 #include "PacManGameMode.generated.h"
 
 
-/**
- * 
- */
+//Game states
+
+UENUM()
+enum EStates { Chase, Scatter, Frightened };
+
+
 UCLASS()
 class PACMAN_API APacManGameMode : public AGameModeBase
 {
@@ -28,18 +33,77 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 		AMazeGenerator* GMaze;
 
-	//Subclass Blinky
-	UPROPERTY(EditAnyWhere)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Variable", meta = (AllowPrivateAccess = true))
+		float PointCounter;
 
-		TSubclassOf<ABlinky> Blinky;
-
-	UPROPERTY(VisibleAnywhere)
-
-		ABlinky* BlinkyP;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Variable", meta = (AllowPrivateAccess = true))
+		float LifeCounter;
 
 	APacManGameMode();
 
+	//State machine objects
+
+	UPROPERTY(EditAnywhere)
+		TSubclassOf<ABlinky> BlinkyClass;
+
+	UPROPERTY(EditAnywhere)
+		TSubclassOf<AInky> InkyClass;
+
+	UPROPERTY(EditAnywhere)
+		TSubclassOf<APacManPawn> PacManClass;
+
+	UPROPERTY(EditAnywhere)
+		 ABlinky* Blinky;
+
+	UPROPERTY(EditAnywhere)
+		 AInky* Inky;
+
+	UPROPERTY(EditAnywhere)
+		 APacManPawn* PacMan;
+
+	UPROPERTY(EditAnywhere)
+		TEnumAsByte<EStates> EStates;
+
+	//Int to save last state when entered Frightened Mode
+
+	UPROPERTY(EditAnywhere)
+	int LastState;
+
+    //Counter to see how many times Scatter state has been activated
+
+	UPROPERTY(EditAnywhere)
+		int Scatter_Counter;
+
+	//Counter to see how many times Chase state has been activated
+	
+	UPROPERTY(EditAnywhere)
+		int Chase_Counter;
+
+	//Timers
+
+	FTimerHandle FrightnedTimer;
+	
+	FTimerHandle ChaseTimer;
+
+	FTimerHandle ScatterTimer;
+
+
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+
+	//State Functions
+
+	void EnterFrightenedMode();
+
+	void FrightenedExit();
+
+	void EnterChaseMode();
+
+	void ChaseExit();
+
+	void EnterScatterMode();
+
+	void ScatterExit();
+
 
 };

@@ -20,4 +20,5 @@ public:
 
 	virtual APacManNode* GetPlayerRelativeTarget() override;
 
+	virtual void TeleportToHome() ;
 };
