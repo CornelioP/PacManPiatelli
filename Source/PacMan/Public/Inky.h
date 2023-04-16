@@ -13,9 +13,24 @@ UCLASS()
 class PACMAN_API AInky : public AGhostPawn
 {
 	GENERATED_BODY()
+
 public:	
+
+	AInky();
+
+	virtual void Tick(float DeltaTime) override;
+    
 	virtual void TeleportToHome();
 
-protected:
-	virtual void OnNodeReached() override;
+	virtual void SetGhostTarget() override;
+
+	virtual void BeginPlay() override;
+
+private:
+
+	FVector2D InkyScatterNodeCoord;
+
+	APacManNode* InkyScatterNode;
+
+
 };

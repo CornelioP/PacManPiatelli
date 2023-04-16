@@ -71,11 +71,9 @@ void APacManGameMode::EnterFrightenedMode()
 
 	PacMan->CurrentMovementSpeed = 360;
 
-	Inky->CurrentMovementSpeed = 200;
+	Blinky->GhostFrightenedState();
 
-	Blinky->CurrentMovementSpeed = 200;
-
-
+	Inky->GhostFrightenedState();
 
 }
 
@@ -128,7 +126,8 @@ void APacManGameMode::EnterChaseMode()
 
 	Inky->CurrentMovementSpeed = 300;
 
-	Blinky->CurrentMovementSpeed = 300;
+    Blinky->CurrentMovementSpeed = 300;
+	
 }
 
 void APacManGameMode::ChaseExit()
@@ -148,7 +147,7 @@ void APacManGameMode::EnterScatterMode()
 	//Initialize timer 
 	float ScatterTime;
 
-	//First two times the scatter state is enabled for 7 second after that is 5 seconds
+	//First two times the scatter state is enabled for 7 second, after that is 5 seconds
 
 	if (Scatter_Counter == 1 || Scatter_Counter == 2)
 	{
@@ -163,9 +162,13 @@ void APacManGameMode::EnterScatterMode()
 	//Set current state to Scatter
 
 	EStates = Scatter;
+
+	//Scatter mode movements is handled in the SetGhostTarget methods of each ghost
+	
 }
 
 void APacManGameMode::ScatterExit()
 {
 	EnterChaseMode();
 }
+

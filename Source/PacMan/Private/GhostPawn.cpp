@@ -11,6 +11,22 @@ AGhostPawn::AGhostPawn()
 	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
+
+	//Mesh to handle frightened state 
+	StaticMeshBlue = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Blue Mesh"));
+	StaticMeshWhite = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("White Mesh"));
+
+	StaticMeshBlue->SetupAttachment(Collider);
+	StaticMeshWhite->SetupAttachment(Collider);
+
+	StaticMeshBlue->SetVisibility(false);
+	StaticMeshWhite->SetVisibility(false);
+
+	//Time in blue and white 
+	WhiteTime = 1.0;
+	BlueTime = 1.0;
+	FlashCounter = 0;
+
 }
 
 void AGhostPawn::BeginPlay()
@@ -49,7 +65,7 @@ void AGhostPawn::OnNodeReached()
 void AGhostPawn::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	if (this->GetTargetNode() == nullptr && GameMode->EStates != Frightened)
+	if (this->GetTargetNode() == nullptr)
 	{
 		SetGhostTarget();
 	}
@@ -106,3 +122,107 @@ void AGhostPawn::TeleportToGhostBase()
 
 	SetActorLocation(GhostBase);
 }
+
+void AGhostPawn::GhostFrightenedState()
+{
+	//In frightened state Ghost go at 50% speed
+	CurrentMovementSpeed = 200;
+
+	//Make Ghosts Flash
+	MeshHandler();
+
+	//Invert direction to singal frightened state entered
+	InvertDirection();
+
+
+}
+
+void AGhostPawn::InvertDirection()
+{
+	LastValidInputDirection = LastValidInputDirection * (-1);
+}
+
+void AGhostPawn::MeshHandler()
+{
+	StaticMeshBlue->SetVisibility(true);
+
+	GetWorld()->GetTimerManager().SetTimer(BlueMeshTimer, this, &AGhostPawn::MeshWhite, BlueTime, false);
+}
+
+void AGhostPawn::MeshWhite()
+{
+	StaticMeshWhite->SetVisibility(true);
+
+	GetWorld()->GetTimerManager().SetTimer(WhiteMeshTimer, this, &AGhostPawn::MeshBlue, WhiteTime, false);
+}
+
+void AGhostPawn::MeshBlue()
+{
+	//Increment FlashCounter 
+	FlashCounter += 1;
+	//Set mesh blue
+	StaticMeshWhite->SetVisibility(false);
+
+	if (FlashCounter < 3)
+	{
+		GetWorld()->GetTimerManager().SetTimer(BlueMeshTimer, this, &AGhostPawn::MeshWhite, BlueTime, false);
+	}
+	else
+	{
+		GetWorld()->GetTimerManager().SetTimer(BlueMeshTimer, this, &AGhostPawn::ResetMesh, BlueTime, false);
+	}
+}
+
+void AGhostPawn::ResetMesh()
+{
+	//Disable Mesh
+	StaticMeshBlue->SetVisibility(false);
+	StaticMeshWhite->SetVisibility(false);
+
+	//Reset counter
+	FlashCounter = 0;
+}
+
+void AGhostPawn::SetFrightenedStateTarget()
+{
+	float RandomNumber = Stream.FRandRange(0, 100);
+
+	if (RandomNumber <= 25)
+	{
+		 DirCasualVector = FVector(1, 0, 0);
+	}
+	else if (RandomNumber> 25 && RandomNumber <=50)
+	{
+		DirCasualVector = FVector(0, 1, 0);
+	}
+	else if ( RandomNumber > 50 && RandomNumber <= 75)
+	{
+		 DirCasualVector = FVector(-1, 0, 0);
+	}
+	else if (RandomNumber > 75 && RandomNumber <= 100)
+	{
+		 DirCasualVector = FVector(0, -1, 0);
+	}
+
+	 RandomNodeCord = CurrentGridCoords + MazeGen->GetTwoDOfVector(DirCasualVector);
+	 RandomNode = *(MazeGen->TileMap.Find(RandomNodeCord));
+
+	 if (MazeGen->IsNodeValidForWalk(RandomNode))
+	 {
+		 TargetNode = RandomNode;
+	 }
+}
+
+void AGhostPawn::OutOfGhostHouse()
+{
+	//APacManNode* OutHouseNode = *(MazeGen->TileMap.Find(FVector2D(20, 12)));
+
+	//APacManNode* PossibleNode = MazeGen->ShortestNodeToTarget(this->GetLastNodeCoords(), OutHouseNode->GetNodePosition(), -(this->GetLastValidDirection()));
+
+	//TargetNode = PossibleNode;
+
+	//NextNode = PossibleNode;
+
+	//LastValidInputDirection = MazeGen->GetThreeDOfTwoDVector(PossibleNode->GetNodePosition() - this->GetLastNodeCoords());
+}
+

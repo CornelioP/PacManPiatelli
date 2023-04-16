@@ -104,6 +104,4 @@ public:
 	void EnterScatterMode();
 
 	void ScatterExit();
-
-
 };

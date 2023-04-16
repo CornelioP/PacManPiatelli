@@ -3,7 +3,7 @@
 
 #include "MazeGenerator.h"
 
-constexpr int MapSizeX = 35;
+constexpr int MapSizeX = 36;
 // la y contiene 28 elementi (+ il carattere di fine stringa)
 constexpr int MapSizeY = 29;
 

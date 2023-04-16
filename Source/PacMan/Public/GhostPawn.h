@@ -41,10 +41,53 @@ public:
 		class APacManPawn* Player;
 
 
-	void SetGhostTarget();
+	virtual void SetGhostTarget();
 
 
 	void TeleportToGhostBase();
 
+	//Mesh change for frightened mode
+	UPROPERTY(EditAnywhere)
+		UStaticMeshComponent* StaticMeshBlue;
+
+	UPROPERTY(EditAnywhere)
+		UStaticMeshComponent* StaticMeshWhite;
+
+	//Function that handle frightened state 
+
+	void GhostFrightenedState();
+
+	//Function to invert direction;
+
+	void InvertDirection();
+
+	//Function and variables to make ghosts Mesh blue and white 
+
+	void MeshHandler();
+	void MeshWhite();
+	void MeshBlue();
+	void ResetMesh();
+
+	FTimerHandle WhiteMeshTimer;
+	FTimerHandle BlueMeshTimer;
+	float WhiteTime;
+	float BlueTime;
+	float FlashCounter;
+
+	//Function to generate random target
+
+	void SetFrightenedStateTarget();
+
+	FRandomStream Stream;
+
+	FVector DirCasualVector;
+
+	FVector2D RandomNodeCord;
+
+	APacManNode* RandomNode;
+
+	//Function that impose ghosts to go out the Ghost House
+
+	void OutOfGhostHouse();
 };
 
