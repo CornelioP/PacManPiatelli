@@ -44,7 +44,7 @@ void AGhostPawn::BeginPlay()
 	FVector2D StartNode = MazeGen->GetXYPositionByRelativeLocation(GetActorLocation());
 	LastNode = MazeGen->TileMap[StartNode];
 	Player = Cast<APacManPawn>(UGameplayStatics::GetActorOfClass(GetWorld(), APacManPawn::StaticClass()));
-
+	CurrentMovementSpeed = 375;
 
   
 }
@@ -136,7 +136,7 @@ void AGhostPawn::TeleportToGhostBase()
 void AGhostPawn::GhostFrightenedState()
 {
 	//In frightened state Ghost go at 50% speed
-	FrightenedSpeed();
+	CurrentMovementSpeed = 250;
 
 	//Make Ghosts Flash
 	MeshHandler();
@@ -149,12 +149,10 @@ void AGhostPawn::GhostFrightenedState()
 
 void AGhostPawn::FrightenedSpeed()
 {
-	this->CurrentMovementSpeed = (StandardSpeed / 100) * 50;
 }
 
 void AGhostPawn::ChaseScatterSpeed()
 {
-	this->CurrentMovementSpeed = (StandardSpeed / 100) * 75;
 }
 
 void AGhostPawn::InvertDirection()

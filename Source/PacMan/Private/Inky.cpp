@@ -3,7 +3,7 @@
 
 #include "Inky.h"
 #include "PacManGameMode.h"
-#include "PacManPawn.h"
+
 
 
 AInky::AInky()
@@ -16,7 +16,7 @@ AInky::AInky()
 void AInky::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	if (GameMode->PointCounter == 30)
+	if (Player->PointCounter == 30)
 	{
 		CanMove = true;
 
@@ -26,7 +26,7 @@ void AInky::Tick(float DeltaTime)
 
 void AInky::TeleportToHome()
 {
-	const FVector InkySpawn(1750.0f, 1250.0f, 51.0f);
+	const FVector InkySpawn(1750.0f, 1250.0f, 1.0f);
 
 	CurrentGridCoords = FVector2D(17, 12);
 
@@ -45,16 +45,99 @@ void AInky::SetGhostTarget()
 
 	APacManNode* PossibleNode = nullptr;
 
+	FVector2D Tmp_Coord = FVector2D(0, 0);
+
+	FVector BlinkyPosition = FVector(0, 0, 0);
+
+	FVector2D BlinkyCoord = FVector2D(0, 0);
+
+	FVector2D TargetCoord = FVector2D(0, 0);
+
+	//Inky needs PacmMan and Blinky current node.We need to get two node ahead of PacMan,then we take blinky position and draw a vector towards pacman position and then double it.
+
 	if (GameMode->EStates != Frightened)
 	{
 		if (GameMode->EStates == Chase ) {
 
-			Target = GetPlayerRelativeTarget();
+			//Get Blinky position 3D
+			BlinkyPosition = GameMode->Blinky->GetActorLocation();
+			BlinkyCoord = MazeGen->GetTwoDOfVector(BlinkyPosition);
 
-			if (!Target)
+			if (Player->GetLastValidDirection() == FVector(0, 1, 0))
 			{
-				Target = GetPlayer()->GetLastNode();
+			
+
+				Tmp_Coord = (Player->GetLastNodeCoords() + FVector2D(2, 0));
+				Tmp_Coord.X = FMath::Clamp(Tmp_Coord.X, 0, 36);
+				Tmp_Coord.Y = FMath::Clamp(Tmp_Coord.Y, 0, 27);
+
+				//Now i calculate the vector that connects blinky's vector and pacman offset vector and double it
+
+				TargetCoord = ( Tmp_Coord - BlinkyCoord) + Tmp_Coord;
+				TargetCoord.X = FMath::Clamp(TargetCoord.X, 0, 36);
+				TargetCoord.Y = FMath::Clamp(TargetCoord.Y, 0, 27);
+
+				Target = *(MazeGen->TileMap.Find(TargetCoord));
 			}
+			else if (Player->GetLastValidDirection() == FVector(0, -1, 0))
+			{
+				Tmp_Coord = Player->GetLastNodeCoords() + FVector2D(-2, 0);
+				Tmp_Coord.X = FMath::Clamp(Tmp_Coord.X, 0, 36);
+				Tmp_Coord.Y = FMath::Clamp(Tmp_Coord.Y, 0, 27);
+		         
+				//Now i calculate the vector that connects blinky's vector and pacman offset vector and double it
+
+				TargetCoord = (Tmp_Coord - BlinkyCoord) + Tmp_Coord;
+				TargetCoord.X = FMath::Clamp(TargetCoord.X, 0, 36);
+				TargetCoord.Y = FMath::Clamp(TargetCoord.Y, 0, 27);
+
+				Target = *(MazeGen->TileMap.Find(TargetCoord));
+
+				//GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, FString::Printf(TEXT("%f,%f"),(Tmp_Coord.X, Tmp_Coord.Y)));
+			}
+			else if (Player->GetLastValidDirection() == FVector(1, 0, 0))
+			{
+				Tmp_Coord = Player->GetLastNodeCoords() + FVector2D(0, 2);
+				Tmp_Coord.X = FMath::Clamp(Tmp_Coord.X, 0, 36);
+				Tmp_Coord.Y = FMath::Clamp(Tmp_Coord.Y, 0, 27);
+		
+				//Now i calculate the vector that connects blinky's vector and pacman offset vector and double it
+
+				TargetCoord = (Tmp_Coord - BlinkyCoord) + Tmp_Coord;
+				TargetCoord.X = FMath::Clamp(TargetCoord.X, 0, 36);
+				TargetCoord.Y = FMath::Clamp(TargetCoord.Y, 0, 27);
+
+				Target = *(MazeGen->TileMap.Find(TargetCoord));
+
+				//GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, FString::Printf(TEXT("%f,%f"), (Tmp_Coord.X, Tmp_Coord.Y)));
+			}
+			else if (Player->GetLastValidDirection() == FVector(-1, 0, 0))
+			{
+				Tmp_Coord = Player->GetLastNodeCoords() + FVector2D(0, -2);
+				Tmp_Coord.X = FMath::Clamp(Tmp_Coord.X, 0, 36);
+				Tmp_Coord.Y = FMath::Clamp(Tmp_Coord.Y, 0, 27);
+				
+				//Now i calculate the vector that connects blinky's vector and pacman offset vector a
+
+				TargetCoord = (Tmp_Coord - BlinkyCoord) + Tmp_Coord;
+				TargetCoord.X = FMath::Clamp(TargetCoord.X, 0, 36);
+				TargetCoord.Y = FMath::Clamp(TargetCoord.Y, 0, 27);
+
+				Target = *(MazeGen->TileMap.Find(TargetCoord));
+
+				//GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, FString::Printf(TEXT("%f,%f"), (Tmp_Coord.X, Tmp_Coord.Y)));
+			}
+
+			else
+			{
+				Target = GetPlayerRelativeTarget();
+
+				if (!Target)
+				{
+					Target = GetPlayer()->GetLastNode();
+				}
+			}
+
 		}
 		else
 		{

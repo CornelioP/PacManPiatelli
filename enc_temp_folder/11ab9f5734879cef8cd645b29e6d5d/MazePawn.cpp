@@ -39,7 +39,7 @@ void AMazePawn::BeginPlay()
 	Super::BeginPlay();
 	GameMode = (APacManGameMode*)(GetWorld()->GetAuthGameMode());
 	MazeGen = GameMode->GMaze;
-	CurrentMovementSpeed = StandardSpeed;
+	CurrentMovementSpeed = NormalMovementSpeed;
 	CanMove = true;
 
 	//Necessary to handle collisions
@@ -81,8 +81,6 @@ void AMazePawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
 }
-
-
 
 void AMazePawn::MoveToCurrentTargetNode()
 {

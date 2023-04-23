@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "Components/BoxComponent.h"
 #include "FruitActor.generated.h"
 
 UCLASS()
@@ -15,6 +16,14 @@ public:
 	// Sets default values for this actor's properties
 	AFruitActor();
 
+	UPROPERTY(EditAnywhere)
+		UStaticMeshComponent* StaticMesh;
+
+	UPROPERTY(EditAnywhere, Category = "Disable")
+		bool HideInGame;
+
+	UFUNCTION(BlueprintCallable, Category = "Disable")
+		void DisableActor();
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

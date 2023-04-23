@@ -13,5 +13,14 @@ UCLASS()
 class PACMAN_API APowerPoint : public APointActor
 {
 	GENERATED_BODY()
+
+public:
+	FTimerHandle PointFlash;
+
+	void FlashPoint();
+	void ExitFlashPoint();
+	bool IsEaten;
+
+	virtual void BeginPlay() override;
 	
 };

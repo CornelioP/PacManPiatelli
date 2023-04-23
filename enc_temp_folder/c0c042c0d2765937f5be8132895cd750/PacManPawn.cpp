@@ -17,7 +17,7 @@ APacManPawn::APacManPawn()
 
 	CurrentGridCoords = FVector2D(8,14);
 
-	NormalMovementSpeed = (StandardSpeed/100)*80;
+	NormalMovementSpeed = 320;
 
 	//Fruit should spawn near the center of the Maze 
 	minX = 6;

@@ -101,12 +101,12 @@ void ABlinky::ElroyEnter()
 	if (Player->PointCounter == 214)
 	{
 		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, FString::Printf(TEXT("EELLLLRROOOOYYY 320")));
-	    CurrentMovementSpeed = (StandardSpeed / 100) * 80;
+	    CurrentMovementSpeed = 400;
 	}
 	else
 	{
 		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, FString::Printf(TEXT("EELLLLRROOOOYYY 400")));
-	    CurrentMovementSpeed = (StandardSpeed / 100) * 85;
+	    CurrentMovementSpeed = 450;
 	}
 
 }

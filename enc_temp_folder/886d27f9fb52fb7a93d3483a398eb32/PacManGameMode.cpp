@@ -2,13 +2,13 @@
 
 
 
-// PacMan 100% speed should be 75.75 pixel per second, each tile is 8 pixel so it should be in the rnage of 10 tile per second
+// PacMan 100% speed 500
 
 //Chase and Scatter Mode 
 //Pacman speed 80% = 400
 //Ghost speed  75% = 375
 
-//Frightened moden  
+//Frightened mode
 //Pacman speed 90% = 450
 //Ghost speed  50% = 250
 
@@ -77,7 +77,7 @@ void APacManGameMode::EnterFrightenedMode()
 
 	//Set Movement Speed
 
-	PacMan->CurrentMovementSpeed = (PacMan->StandardSpeed / 100) * 90;;
+	PacMan->CurrentMovementSpeed = 450;
 
 
     Blinky->GhostFrightenedState();
@@ -135,15 +135,15 @@ void APacManGameMode::EnterChaseMode()
 
 	//Set movement speed
 
-	PacMan->CurrentMovementSpeed = (PacMan->StandardSpeed / 100) * 80;
+	PacMan->CurrentMovementSpeed = 400;
 
-	Inky->ChaseScatterSpeed();
+	Inky->CurrentMovementSpeed = 375;
 
-    Blinky->ChaseScatterSpeed();
+    Blinky->CurrentMovementSpeed = 375;
 
-	Pinky->ChaseScatterSpeed();
+	Pinky->CurrentMovementSpeed = 375;
 
-	Clyde->ChaseScatterSpeed();
+	Clyde->CurrentMovementSpeed = 375;
 	
 }
 
@@ -182,15 +182,15 @@ void APacManGameMode::EnterScatterMode()
 
 	//Set movement speed
 
-	PacMan->CurrentMovementSpeed = (PacMan->StandardSpeed / 100) * 80;
+	PacMan->CurrentMovementSpeed = 400;
 
-	Inky->ChaseScatterSpeed();
+	Inky->CurrentMovementSpeed = 375;
 
-	Blinky->ChaseScatterSpeed();
+	Blinky->CurrentMovementSpeed = 375;
 
-	Pinky->ChaseScatterSpeed();
+	Pinky->CurrentMovementSpeed = 375;
 
-	Clyde->ChaseScatterSpeed();
+	Clyde->CurrentMovementSpeed = 375;
 
 	//Scatter mode movements is handled in the SetGhostTarget methods of each ghost
 	

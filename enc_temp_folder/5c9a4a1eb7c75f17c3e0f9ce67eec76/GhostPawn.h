@@ -70,11 +70,6 @@ public:
 
 	void GhostFrightenedState();
 
-	//Spped functions
-
-	void FrightenedSpeed();
-	void ChaseScatterSpeed();
-
 	//Function to invert direction;
 
 	void InvertDirection();

@@ -99,6 +99,4 @@ public:
 	UPROPERTY(EditAnywhere, Category = "Movement")
 		float NormalMovementSpeed = 100.0f;
 
-	UPROPERTY()
-		float StandardSpeed = 800.0f;
 };

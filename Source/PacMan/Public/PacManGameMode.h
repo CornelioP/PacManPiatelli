@@ -6,6 +6,8 @@
 #include "MazeGenerator.h"
 #include "Blinky.h"
 #include "Inky.h"
+#include "Pinky.h"
+#include "Clyde.h"
 #include "PacManPawn.h"
 #include "GameFramework/GameModeBase.h"
 #include "PacManGameMode.generated.h"
@@ -33,15 +35,12 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 		AMazeGenerator* GMaze;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Variable", meta = (AllowPrivateAccess = true))
-		float PointCounter;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Variable", meta = (AllowPrivateAccess = true))
-		float LifeCounter;
-
 	APacManGameMode();
 
 	//State machine objects
+
+	UPROPERTY(EditAnywhere)
+		TSubclassOf<APinky> PinkyClass;
 
 	UPROPERTY(EditAnywhere)
 		TSubclassOf<ABlinky> BlinkyClass;
@@ -49,14 +48,25 @@ public:
 	UPROPERTY(EditAnywhere)
 		TSubclassOf<AInky> InkyClass;
 
+
+	UPROPERTY(EditAnywhere)
+		TSubclassOf<AClyde> ClydeClass;
+
 	UPROPERTY(EditAnywhere)
 		TSubclassOf<APacManPawn> PacManClass;
+
+
+	UPROPERTY(EditAnywhere)
+		APinky* Pinky;
 
 	UPROPERTY(EditAnywhere)
 		 ABlinky* Blinky;
 
 	UPROPERTY(EditAnywhere)
 		 AInky* Inky;
+
+	UPROPERTY(EditAnywhere)
+		AClyde* Clyde;
 
 	UPROPERTY(EditAnywhere)
 		 APacManPawn* PacMan;
@@ -104,4 +114,6 @@ public:
 	void EnterScatterMode();
 
 	void ScatterExit();
+
+	void Respawn();
 };
