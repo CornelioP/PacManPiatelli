@@ -30,6 +30,6 @@ private:
 
 	APacManNode* ClydeScatterNode;
 
-	FVector2D ClydeSpawn = FVector2D(11, 3);
+	FVector2D ClydeSpawn = FVector2D(0, 0);
 
 };

@@ -20,7 +20,7 @@ private:
 
 	APacManNode* BlinkyScatterNode;
 
-	FVector2D BlinkySpawn = FVector2D(23, 25);
+	FVector2D BlinkySpawn = FVector2D(17, 12);
 	
 public:
 

@@ -26,15 +26,7 @@ void AClyde::SetGhostTarget()
 		Target = *(MazeGen->TileMap.Find(ClydeSpawn));
 		PossibleNode = MazeGen->ShortestNodeToTarget(this->GetLastNodeCoords(), Target->GetNodePosition(), -(this->GetLastValidDirection()));
 		RespawnGhost(ClydeSpawn);
-		
-		if (CurrentGridCoords == Target->GetNodePosition())
-		{
-			
-			IsEaten = false;
-			//Get out of respwan state
-			ExitRespawnState();
-			
-		}
+		IsEaten = false;
 
 	}
 

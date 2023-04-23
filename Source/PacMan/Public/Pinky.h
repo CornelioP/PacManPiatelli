@@ -20,7 +20,6 @@ public:
 
 	virtual void Tick(float DeltaTime) override;
 
-	virtual void TeleportToHome();
 
 	virtual void SetGhostTarget() override;
 
@@ -32,5 +31,6 @@ private:
 
 	APacManNode* PinkyScatterNode;
 
+	FVector2D PinkySpawn = FVector2D(11, 25);
 	
 };

@@ -20,11 +20,10 @@ public:
 
 	virtual void Tick(float DeltaTime) override;
     
-	virtual void TeleportToHome();
-
 	virtual void SetGhostTarget() override;
 
 	virtual void BeginPlay() override;
+
 
 private:
 
@@ -32,5 +31,6 @@ private:
 
 	APacManNode* InkyScatterNode;
 
+	FVector2D InkySpawn = FVector2D(23, 3);
 
 };

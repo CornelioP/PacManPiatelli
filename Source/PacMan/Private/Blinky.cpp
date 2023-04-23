@@ -39,7 +39,25 @@ void ABlinky::SetGhostTarget()
 
 	APacManNode* PossibleNode = nullptr;
 
-	if (GameMode->EStates != Frightened)
+	if (IsEaten)
+	{
+		Target = *(MazeGen->TileMap.Find(BlinkySpawn));
+		PossibleNode = MazeGen->ShortestNodeToTarget(this->GetLastNodeCoords(), Target->GetNodePosition(), -(this->GetLastValidDirection()));
+		RespawnGhost(BlinkySpawn);
+		
+		if (CurrentGridCoords == Target->GetNodePosition())
+		{
+			//When respawn is reached reset the ghost 
+			
+			IsEaten = false;
+			//Get out of respwan state
+			ExitRespawnState();
+			
+		}
+
+	}
+
+	else if (GameMode->EStates != Frightened)
 	{
 		if ((GameMode->EStates == Chase || IsElroy)) {
 
@@ -74,21 +92,6 @@ void ABlinky::SetGhostTarget()
 	}
 }
 
-void ABlinky::TeleportToHome()
-{
-
-	const FVector BlinkySpawn(2050.0f, 1450.0f, 1.0f);
-
-	CurrentGridCoords = FVector2D(20, 14);
-
-	LastNode = *(MazeGen->TileMap.Find(FVector2D(20, 14)));
-
-	SetNextNode(*(MazeGen->TileMap.Find(FVector2D(20, 14))));
-
-	SetTargetNode(NextNode);
-
-	SetActorLocation(BlinkySpawn);
-}
 
 void ABlinky::ElroyEnter()
 {

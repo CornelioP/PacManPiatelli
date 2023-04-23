@@ -39,6 +39,15 @@ void ABlinky::SetGhostTarget()
 
 	APacManNode* PossibleNode = nullptr;
 
+	if (IsEaten)
+	{
+		Target = *(MazeGen->TileMap.Find(BlinkySpawn));
+		PossibleNode = MazeGen->ShortestNodeToTarget(this->GetLastNodeCoords(), Target->GetNodePosition(), -(this->GetLastValidDirection()));
+		RespawnGhost(BlinkySpawn);
+		IsEaten = false;
+
+	}
+
 	if (GameMode->EStates != Frightened)
 	{
 		if ((GameMode->EStates == Chase || IsElroy)) {
@@ -74,21 +83,6 @@ void ABlinky::SetGhostTarget()
 	}
 }
 
-void ABlinky::TeleportToHome()
-{
-
-	const FVector BlinkySpawn(2050.0f, 1450.0f, 1.0f);
-
-	CurrentGridCoords = FVector2D(20, 14);
-
-	LastNode = *(MazeGen->TileMap.Find(FVector2D(20, 14)));
-
-	SetNextNode(*(MazeGen->TileMap.Find(FVector2D(20, 14))));
-
-	SetTargetNode(NextNode);
-
-	SetActorLocation(BlinkySpawn);
-}
 
 void ABlinky::ElroyEnter()
 {
@@ -101,12 +95,12 @@ void ABlinky::ElroyEnter()
 	if (Player->PointCounter == 214)
 	{
 		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, FString::Printf(TEXT("EELLLLRROOOOYYY 320")));
-	    CurrentMovementSpeed = 400;
+	    CurrentMovementSpeed = (StandardSpeed / 100) * 80;
 	}
 	else
 	{
 		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, FString::Printf(TEXT("EELLLLRROOOOYYY 400")));
-	    CurrentMovementSpeed = 450;
+	    CurrentMovementSpeed = (StandardSpeed / 100) * 85;
 	}
 
 }

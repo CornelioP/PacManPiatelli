@@ -36,6 +36,8 @@ AGhostPawn::AGhostPawn()
 	BlueTime = 1.0;
 	FlashCounter = 0;
 
+	IsEaten = false;
+
 }
 
 void AGhostPawn::BeginPlay()
@@ -44,7 +46,7 @@ void AGhostPawn::BeginPlay()
 	FVector2D StartNode = MazeGen->GetXYPositionByRelativeLocation(GetActorLocation());
 	LastNode = MazeGen->TileMap[StartNode];
 	Player = Cast<APacManPawn>(UGameplayStatics::GetActorOfClass(GetWorld(), APacManPawn::StaticClass()));
-	CurrentMovementSpeed = 375;
+
 
   
 }
@@ -136,7 +138,7 @@ void AGhostPawn::TeleportToGhostBase()
 void AGhostPawn::GhostFrightenedState()
 {
 	//In frightened state Ghost go at 50% speed
-	CurrentMovementSpeed = 250;
+	FrightenedSpeed();
 
 	//Make Ghosts Flash
 	MeshHandler();
@@ -149,10 +151,12 @@ void AGhostPawn::GhostFrightenedState()
 
 void AGhostPawn::FrightenedSpeed()
 {
+	this->CurrentMovementSpeed = (StandardSpeed / 100) * 50;
 }
 
 void AGhostPawn::ChaseScatterSpeed()
 {
+	this->CurrentMovementSpeed = (StandardSpeed / 100) * 75;
 }
 
 void AGhostPawn::InvertDirection()
@@ -242,5 +246,15 @@ void AGhostPawn::OutOfGhostHouse()
 	//NextNode = PossibleNode;
 
 	//LastValidInputDirection = MazeGen->GetThreeDOfTwoDVector(PossibleNode->GetNodePosition() - this->GetLastNodeCoords());
+}
+
+void AGhostPawn::RespawnGhost(FVector2D RespawnNode)
+{
+	StaticMesh->SetVisibility(false);
+	StaticMeshBlue->SetVisibility(false);
+	StaticMeshWhite->SetVisibility(false);
+
+	TargetNode = *(MazeGen->TileMap.Find(RespawnNode));
+
 }
 

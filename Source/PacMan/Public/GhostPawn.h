@@ -107,5 +107,18 @@ public:
 	//Function that impose ghosts to go out the Ghost House
 
 	void OutOfGhostHouse();
+
+	//Variable to see if ghost is eaten and handel respawn
+
+	bool IsEaten;
+
+	void RespawnGhost(FVector2D RespawnNode);
+
+	void ExitRespawnState();
+
+	FTimerHandle GhostRestartTimer;
+
+	void StopMovement();
+	void MoveAgain();
 };
 

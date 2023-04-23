@@ -46,15 +46,7 @@ void AInky::SetGhostTarget()
 		Target = *(MazeGen->TileMap.Find(InkySpawn));
 		PossibleNode = MazeGen->ShortestNodeToTarget(this->GetLastNodeCoords(), Target->GetNodePosition(), -(this->GetLastValidDirection()));
 		RespawnGhost(InkySpawn);
-		
-		if (CurrentGridCoords == Target->GetNodePosition())
-		{
-			
-			IsEaten = false;
-			//Get out of respwan state
-			ExitRespawnState();
-		
-		}
+		IsEaten = false;
 		
 	}
 	else if (GameMode->EStates != Frightened)

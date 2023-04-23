@@ -135,7 +135,7 @@ void APacManPawn::Eat(AGhostPawn* Ghost)
 { 
 	//When a ghost is eaten teleport it to ghost's house
 	const FVector GhostBase = FVector(1450.0f, 1250.0f, 51.0f);
-	Ghost->TeleportToGhostBase();
+	Ghost->IsEaten = true;
 }
 
 

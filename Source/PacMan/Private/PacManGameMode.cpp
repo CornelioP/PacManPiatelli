@@ -207,13 +207,6 @@ void APacManGameMode::Respawn()
 
 	//Handle Ghost restart 
 
-	Blinky->TeleportToHome();
-
-	Inky->TeleportToHome();
-
-	Pinky->TeleportToHome();
-
-	Clyde->TeleportToHome();
 
 	//Decrement life 
 	

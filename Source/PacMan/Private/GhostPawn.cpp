@@ -36,6 +36,8 @@ AGhostPawn::AGhostPawn()
 	BlueTime = 1.0;
 	FlashCounter = 0;
 
+	IsEaten = false;
+
 }
 
 void AGhostPawn::BeginPlay()
@@ -244,5 +246,35 @@ void AGhostPawn::OutOfGhostHouse()
 	//NextNode = PossibleNode;
 
 	//LastValidInputDirection = MazeGen->GetThreeDOfTwoDVector(PossibleNode->GetNodePosition() - this->GetLastNodeCoords());
+}
+
+void AGhostPawn::RespawnGhost(FVector2D RespawnNode)
+{
+	StaticMesh->SetVisibility(false);
+	StaticMeshBlue->SetVisibility(false);
+	StaticMeshWhite->SetVisibility(false);
+
+	TargetNode = *(MazeGen->TileMap.Find(RespawnNode));
+
+}
+
+void AGhostPawn::ExitRespawnState()
+{
+	StaticMesh->SetVisibility(true);
+	StopMovement();
+}
+
+void AGhostPawn::StopMovement()
+{
+	CanMove = false;
+
+
+	GetWorld()->GetTimerManager().SetTimer(GhostRestartTimer, this, &AGhostPawn::MoveAgain, 2.0f, false);
+
+}
+
+void AGhostPawn::MoveAgain()
+{
+	CanMove = true;
 }
 

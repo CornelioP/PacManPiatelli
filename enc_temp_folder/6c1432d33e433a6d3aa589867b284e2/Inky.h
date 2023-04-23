@@ -4,32 +4,33 @@
 
 #include "CoreMinimal.h"
 #include "GhostPawn.h"
-#include "Clyde.generated.h"
+#include "Inky.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class PACMAN_API AClyde : public AGhostPawn
+class PACMAN_API AInky : public AGhostPawn
 {
 	GENERATED_BODY()
-	
-public:
 
-	AClyde();
+public:	
+
+	AInky();
 
 	virtual void Tick(float DeltaTime) override;
-
+    
 	virtual void SetGhostTarget() override;
 
 	virtual void BeginPlay() override;
 
+
 private:
 
-	FVector2D ClydeScatterNodeCoord;
+	FVector2D InkyScatterNodeCoord;
 
-	APacManNode* ClydeScatterNode;
+	APacManNode* InkyScatterNode;
 
-	FVector2D ClydeSpawn = FVector2D(11, 3);
+	FVector2D InkySpawn = FVector2D(17, 12);
 
 };
