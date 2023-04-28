@@ -36,7 +36,7 @@ void APacManPawn::BeginPlay()
 	FVector2D StartNode = MazeGen->GetXYPositionByRelativeLocation(GetActorLocation());
 	LastNode = MazeGen->TileMap[StartNode];
 
-	LifeCounter = 2.0;
+	LifeCounter = 3.0;
 	PointCounter = 0.0;
 	PointCounterUI = 0.0;
 
