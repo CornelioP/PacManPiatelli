@@ -38,6 +38,7 @@ void APacManPawn::BeginPlay()
 
 	LifeCounter = 2.0;
 	PointCounter = 0.0;
+	PointCounterUI = 0.0;
 
 }
 
@@ -83,6 +84,7 @@ void APacManPawn::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* Ot
 
 		//Increment point when PacMan collide with PointActor
 	    PointCounter += 1;
+		PointCounterUI += 10;
 	    
 		//Slow down for 1/60 of second
 		
@@ -117,6 +119,8 @@ void APacManPawn::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* Ot
 		PowerPoint->DisableActor();
 		PowerPoint->IsEaten = true;
 
+		PointCounterUI += 150;
+
 		//When a power point is eaten enter Frightened mode 
 
 		GameMode->EnterFrightenedMode();
@@ -126,6 +130,8 @@ void APacManPawn::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* Ot
 	{
 		Fruit->HideInGame = true;
 		Fruit->DisableActor();
+
+		PointCounterUI += 100;
 	}
 
 

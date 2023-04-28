@@ -56,6 +56,9 @@ public:
 		float PointCounter;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Variable", meta = (AllowPrivateAccess = true))
+		float PointCounterUI;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Variable", meta = (AllowPrivateAccess = true))
 		float LifeCounter;
 
 	////////////////////////////////////////

@@ -60,6 +60,7 @@ void AGhostPawn::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* Oth
 		if (GameMode->EStates == Frightened)
 		{
 			PacMan->Eat(this);
+			PacMan->PointCounterUI += 200;
 
 			APacManNode* EnterNode1 = *(MazeGen->TileMap.Find(FVector2D(19, 13)));
 			APacManNode* EnterNode2 = *(MazeGen->TileMap.Find(FVector2D(19, 14)));
