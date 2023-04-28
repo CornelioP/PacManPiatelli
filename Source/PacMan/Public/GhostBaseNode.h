@@ -13,5 +13,7 @@ UCLASS()
 class PACMAN_API AGhostBaseNode : public APacManNode
 {
 	GENERATED_BODY()
+
+		AGhostBaseNode();
 	
 };

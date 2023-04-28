@@ -31,6 +31,7 @@ void ABlinky::Tick(float DeltaTime)
 	{
 		ElroyEnter();
 	}
+	CheckGateWalkability();
 }
 
 void ABlinky::SetGhostTarget()
@@ -39,7 +40,12 @@ void ABlinky::SetGhostTarget()
 
 	APacManNode* PossibleNode = nullptr;
 
-	if (IsEaten)
+	if (IsSpawnState)
+	{
+		Target = *(MazeGen->TileMap.Find(FVector2D(20, 14)));
+		PossibleNode = MazeGen->ShortestNodeToTarget(this->GetLastNodeCoords(), Target->GetNodePosition(), -(this->GetLastValidDirection()));
+	}
+	else if (IsEaten)
 	{
 		Target = *(MazeGen->TileMap.Find(BlinkySpawn));
 		PossibleNode = MazeGen->ShortestNodeToTarget(this->GetLastNodeCoords(), Target->GetNodePosition(), -(this->GetLastValidDirection()));

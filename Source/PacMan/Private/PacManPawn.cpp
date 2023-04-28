@@ -131,6 +131,27 @@ void APacManPawn::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* Ot
 
 }
 
+void APacManPawn::SetNodeGeneric(const FVector Dir)
+{
+	const auto Node = MazeGen->GetNextNode(CurrentGridCoords, Dir);
+	if (MazeGen->IsNodeValidForWalkPacMan(Node))
+	{
+		SetTargetNode(Node);
+	}
+}
+
+void APacManPawn::SetNextNodeByDir(FVector InputDir, bool ForceLast)
+{
+
+	const FVector2D Coords = TargetNode ? TargetNode->GetNodePosition() : LastNode->GetNodePosition();
+	const auto Node = GameMode->GMaze->GetNextNode(Coords, InputDir);
+	if (GameMode->GMaze->IsNodeValidForWalkPacMan(Node))
+	{
+		SetNextNode(Node);
+		SetLastValidDirection(InputDir);
+	}
+}
+
 void APacManPawn::Eat(AGhostPawn* Ghost)
 { 
 	//When a ghost is eaten teleport it to ghost's house
@@ -215,7 +236,7 @@ void APacManPawn::SetVerticalInput(float AxisValue)
 	if (AxisValue == 0) return;
 	const FVector Dir = (GetActorForwardVector() * AxisValue).GetSafeNormal();
 	LastInputDirection = Dir.GetSafeNormal();
-	SetNextNodeByDir(LastInputDirection);
+	SetNextNodeByDir(LastInputDirection,true);
 }
 
 void APacManPawn::SetHorizontalInput(float AxisValue)
@@ -223,7 +244,7 @@ void APacManPawn::SetHorizontalInput(float AxisValue)
 	if (AxisValue == 0) return;
 	const FVector Dir = (GetActorRightVector() * AxisValue).GetSafeNormal();
 	LastInputDirection = Dir;
-	SetNextNodeByDir(LastInputDirection);
+	SetNextNodeByDir(LastInputDirection,true);
 }
 
 void APacManPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)

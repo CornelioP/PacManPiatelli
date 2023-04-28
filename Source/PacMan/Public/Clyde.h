@@ -24,12 +24,13 @@ public:
 
 	virtual void BeginPlay() override;
 
+	FVector2D ClydeSpawn = FVector2D(17,14);
+
 private:
 
 	FVector2D ClydeScatterNodeCoord;
 
 	APacManNode* ClydeScatterNode;
 
-	FVector2D ClydeSpawn = FVector2D(11, 3);
 
 };

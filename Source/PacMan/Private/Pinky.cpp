@@ -11,6 +11,7 @@ APinky::APinky()
 void APinky::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+	CheckGateWalkability();
 	
 }
 
@@ -22,7 +23,12 @@ void APinky::SetGhostTarget()
 
 	FVector2D Tmp_Coord = FVector2D(0, 0);
 
-	if (IsEaten)
+	if (IsSpawnState)
+	{
+		Target = *(MazeGen->TileMap.Find(FVector2D(20,14)));
+		PossibleNode = MazeGen->ShortestNodeToTarget(this->GetLastNodeCoords(), Target->GetNodePosition(), -(this->GetLastValidDirection()));
+	}
+	else if (IsEaten)
 	{
 		Target = *(MazeGen->TileMap.Find(PinkySpawn));
 		PossibleNode = MazeGen->ShortestNodeToTarget(this->GetLastNodeCoords(), Target->GetNodePosition(), -(this->GetLastValidDirection()));

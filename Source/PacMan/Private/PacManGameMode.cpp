@@ -39,7 +39,7 @@ void APacManGameMode::BeginPlay()
      Clyde = Cast<AClyde>(UGameplayStatics::GetActorOfClass(GetWorld(), ClydeClass));
      PacMan = Cast<APacManPawn>(UGameplayStatics::GetActorOfClass(GetWorld(), PacManClass));
 
-	EnterScatterMode();
+	 EnterSpawnState();
 }
 
 
@@ -206,10 +206,97 @@ void APacManGameMode::Respawn()
 	PacMan->RespawnPacMan();
 
 	//Handle Ghost restart 
+	
+	Inky->GhostRestart(Inky->InkySpawn);
 
+	Blinky->GhostRestart(Blinky->BlinkySpawn);
+
+	Pinky->GhostRestart(Pinky->PinkySpawn);
+
+	Clyde->GhostRestart(Clyde->ClydeSpawn);
 
 	//Decrement life 
 	
 	PacMan->LifeCounter -= 1;
+
+	//Back to the last state
+	if (LastState == 0)
+	{
+		EnterChaseMode();
+
+	}
+
+	if (LastState == 1)
+	{
+
+		EnterScatterMode();
+
+	}
+
+
+}
+
+void APacManGameMode::EnterSpawnState()
+{
+	Inky->IsSpawnState = true;
+
+	Blinky->IsSpawnState = true;
+
+	Pinky->IsSpawnState = true;
+
+	Clyde->IsSpawnState = true;
+
+	//Save last state
+
+	if (EStates == Chase)
+	{
+		LastState = 0;
+		GetWorld()->GetTimerManager().PauseTimer(ChaseTimer);
+
+	}
+
+	if (EStates == Scatter)
+	{
+		LastState = 1;
+		GetWorld()->GetTimerManager().PauseTimer(ScatterTimer);
+
+	}
+
+	//Initialize timer 
+	float SpawnTime = 2;
+	GetWorld()->GetTimerManager().SetTimer(SpawnStateTimer, this, &APacManGameMode::ExitSpawnState, SpawnTime, false);
+
+		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, FString::Printf(TEXT("ENTRATO STATO SPAWN")));
+
+}
+
+void APacManGameMode::ExitSpawnState()
+{
+
+	Inky->IsSpawnState = false;
+
+	Blinky->IsSpawnState = false;
+
+	Pinky->IsSpawnState = false;
+
+	Clyde->IsSpawnState = false;
+
+	Clyde->ExitSpawnStateGhost();
+
+	//Back to the last state
+	if (LastState == 0)
+	{
+		EnterChaseMode();
+
+	}
+
+	if (LastState == 1)
+	{
+
+		EnterScatterMode();
+
+	}
+	
+
 }
 

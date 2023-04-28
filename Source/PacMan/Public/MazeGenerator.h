@@ -152,4 +152,6 @@ public:
 	bool IsNodeReachableAndNextToCurrentPosition(const FVector2D CurrentCoordinates, const FVector2D TargetCoords);
 
 	APacManNode* GetNodeByCoords(const FVector2D Coords);
+
+	static bool IsNodeValidForWalkPacMan(class APacManNode* Node);
 };

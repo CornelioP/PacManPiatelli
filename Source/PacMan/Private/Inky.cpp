@@ -18,10 +18,10 @@ void AInky::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 	if (Player->PointCounter == 30)
 	{
-		CanMove = true;
 
-		OutOfGhostHouse();
+		StopMovement();
 	}
+	
 }
 
 
@@ -40,8 +40,12 @@ void AInky::SetGhostTarget()
 	FVector2D TargetCoord = FVector2D(0, 0);
 
 	//Inky needs PacmMan and Blinky current node.We need to get two node ahead of PacMan,then we take blinky position and draw a vector towards pacman position and then double it.
-
-	if (IsEaten)
+	if (IsSpawnState)
+	{
+		Target = *(MazeGen->TileMap.Find(FVector2D(23, 12)));
+		PossibleNode = MazeGen->ShortestNodeToTarget(this->GetLastNodeCoords(), Target->GetNodePosition(), -(this->GetLastValidDirection()));
+	}
+	else if (IsEaten)
 	{
 		Target = *(MazeGen->TileMap.Find(InkySpawn));
 		PossibleNode = MazeGen->ShortestNodeToTarget(this->GetLastNodeCoords(), Target->GetNodePosition(), -(this->GetLastValidDirection()));
@@ -75,7 +79,7 @@ void AInky::SetGhostTarget()
 
 				//Now i calculate the vector that connects blinky's vector and pacman offset vector and double it
 
-				TargetCoord = ( Tmp_Coord - BlinkyCoord) + Tmp_Coord;
+				TargetCoord = FVector2D(((Tmp_Coord.X - BlinkyCoord.X) * 2 + BlinkyCoord.X),((Tmp_Coord.Y - BlinkyCoord.Y) * 2 + BlinkyCoord.Y));
 				TargetCoord.X = FMath::Clamp(TargetCoord.X, 0, 36);
 				TargetCoord.Y = FMath::Clamp(TargetCoord.Y, 0, 27);
 
@@ -88,8 +92,7 @@ void AInky::SetGhostTarget()
 				Tmp_Coord.Y = FMath::Clamp(Tmp_Coord.Y, 0, 27);
 		         
 				//Now i calculate the vector that connects blinky's vector and pacman offset vector and double it
-
-				TargetCoord = (Tmp_Coord - BlinkyCoord) + Tmp_Coord;
+				TargetCoord = FVector2D(((Tmp_Coord.X - BlinkyCoord.X) * 2 + BlinkyCoord.X), ((Tmp_Coord.Y - BlinkyCoord.Y) * 2 + BlinkyCoord.Y));
 				TargetCoord.X = FMath::Clamp(TargetCoord.X, 0, 36);
 				TargetCoord.Y = FMath::Clamp(TargetCoord.Y, 0, 27);
 
@@ -105,7 +108,7 @@ void AInky::SetGhostTarget()
 		
 				//Now i calculate the vector that connects blinky's vector and pacman offset vector and double it
 
-				TargetCoord = (Tmp_Coord - BlinkyCoord) + Tmp_Coord;
+				TargetCoord = FVector2D(((Tmp_Coord.X - BlinkyCoord.X) * 2 + BlinkyCoord.X), ((Tmp_Coord.Y - BlinkyCoord.Y) * 2 + BlinkyCoord.Y));
 				TargetCoord.X = FMath::Clamp(TargetCoord.X, 0, 36);
 				TargetCoord.Y = FMath::Clamp(TargetCoord.Y, 0, 27);
 
@@ -121,7 +124,7 @@ void AInky::SetGhostTarget()
 				
 				//Now i calculate the vector that connects blinky's vector and pacman offset vector a
 
-				TargetCoord = (Tmp_Coord - BlinkyCoord) + Tmp_Coord;
+				TargetCoord = FVector2D(((Tmp_Coord.X - BlinkyCoord.X) * 2 + BlinkyCoord.X), ((Tmp_Coord.Y - BlinkyCoord.Y) * 2 + BlinkyCoord.Y));
 				TargetCoord.X = FMath::Clamp(TargetCoord.X, 0, 36);
 				TargetCoord.Y = FMath::Clamp(TargetCoord.Y, 0, 27);
 

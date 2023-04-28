@@ -16,7 +16,7 @@
 //Game states
 
 UENUM()
-enum EStates { Chase, Scatter, Frightened };
+enum EStates { Chase, Scatter, Frightened, SpawnState};
 
 
 UCLASS()
@@ -97,6 +97,8 @@ public:
 
 	FTimerHandle ScatterTimer;
 
+	FTimerHandle SpawnStateTimer;
+
 
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -116,4 +118,8 @@ public:
 	void ScatterExit();
 
 	void Respawn();
+
+	void EnterSpawnState();
+
+	void ExitSpawnState();
 };

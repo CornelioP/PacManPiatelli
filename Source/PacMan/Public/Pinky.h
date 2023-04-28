@@ -25,12 +25,12 @@ public:
 
 	virtual void BeginPlay() override;
 
+	FVector2D PinkySpawn = FVector2D(17, 13);
 private:
 
 	FVector2D PinkyScatterNodeCoord;
 
 	APacManNode* PinkyScatterNode;
 
-	FVector2D PinkySpawn = FVector2D(11, 25);
 	
 };

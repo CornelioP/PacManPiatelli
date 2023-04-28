@@ -3,3 +3,7 @@
 
 #include "GhostBaseNode.h"
 
+AGhostBaseNode::AGhostBaseNode()
+{
+	EIsLegal = PacManNotWalkable;
+}

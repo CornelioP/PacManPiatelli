@@ -7,7 +7,7 @@
 #include "PacManNode.generated.h"
 
 UENUM()
-enum EIsLegal { NotWalkable, Walkable };
+enum EIsLegal { NotWalkable, Walkable, PacManNotWalkable };
 
 UCLASS()
 class PACMAN_API APacManNode : public AActor

@@ -22,7 +22,7 @@ public:
 	virtual void SetHorizontalInput(float AxisValue);
 
 	UFUNCTION(BlueprintCallable)
-		void SetNextNodeByDir(FVector InputDir, bool ForceLast = false);
+	virtual void SetNextNodeByDir(FVector InputDir, bool ForceLast = false);
 
 	FVector GetLastValidDirection() const;
 
@@ -74,8 +74,8 @@ protected:
 	virtual void OnNodeReached();
 	void MoveToCurrentTargetNode();
 	virtual void SetTargetNode(APacManNode* Node);
-	void SetNextNode(APacManNode* Node);
-	void SetNodeGeneric(const FVector Dir);
+	virtual void SetNextNode(APacManNode* Node);
+	virtual void SetNodeGeneric(const FVector Dir);
 
 	UPROPERTY(EditAnywhere)
 		UStaticMeshComponent* StaticMesh;
@@ -92,6 +92,8 @@ public:
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+
+	void TeleportPawn(FVector Location,FVector2D SpawnNode);
 
 	UPROPERTY(EditAnywhere, Category = "Movement")
 		float CurrentMovementSpeed = 100.0f;

@@ -284,3 +284,11 @@ APacManNode* AMazeGenerator::GetNodeByCoords(const FVector2D Coords)
 	if (Coords.X < 0 || Coords.Y < 0) return nullptr;
 	return GetTileMap()[FVector2D(Coords.X, Coords.Y)];
 }
+
+bool AMazeGenerator::IsNodeValidForWalkPacMan(APacManNode* Node)
+{
+    if (Node == nullptr) return false;
+	if (Node->EIsLegal == NotWalkable || Node->EIsLegal == PacManNotWalkable) return false;
+
+	return true;
+}

@@ -82,6 +82,22 @@ void AMazePawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 }
 
+void AMazePawn::TeleportPawn(FVector Location, FVector2D SpawnNode)
+{
+	
+	//Set my data_structure variables for the new node
+	CurrentGridCoords = MazeGen->GetTwoDOfVector(Location);
+
+	LastNode = *(MazeGen->TileMap.Find(SpawnNode));
+
+	SetNextNode(*(MazeGen->TileMap.Find(SpawnNode)));
+
+	SetTargetNode(NextNode);
+
+	SetActorLocation(Location);
+
+}
+
 
 
 void AMazePawn::MoveToCurrentTargetNode()

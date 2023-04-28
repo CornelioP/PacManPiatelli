@@ -104,9 +104,6 @@ public:
 
 	APacManNode* RandomNode;
 
-	//Function that impose ghosts to go out the Ghost House
-
-	void OutOfGhostHouse();
 
 	//Variable to see if ghost is eaten and handel respawn
 
@@ -120,5 +117,21 @@ public:
 
 	void StopMovement();
 	void MoveAgain();
+
+	//Spawn state
+
+	bool IsSpawnState;
+
+	bool IsRespawn;
+
+	void ExitSpawnStateGhost();
+
+	//State where PacMan is eaten 
+
+	void GhostRestart(FVector2D SpawnLocation);
+
+	void CheckGateWalkability();
 };
+
+
 

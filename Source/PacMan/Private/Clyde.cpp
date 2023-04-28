@@ -12,6 +12,13 @@ AClyde::AClyde()
 void AClyde::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+	
+	if (Player->PointCounter == 90)
+	{
+
+		StopMovement();
+	}
+	
 }
 
 void AClyde::SetGhostTarget()
@@ -21,7 +28,12 @@ void AClyde::SetGhostTarget()
 
 	APacManNode* PossibleNode = nullptr;
 
-	if (IsEaten)
+	if (IsSpawnState)
+	{
+		Target = *(MazeGen->TileMap.Find(FVector2D(20, 14)));
+		PossibleNode = MazeGen->ShortestNodeToTarget(this->GetLastNodeCoords(), Target->GetNodePosition(), -(this->GetLastValidDirection()));
+	}
+	else if (IsEaten)
 	{
 		Target = *(MazeGen->TileMap.Find(ClydeSpawn));
 		PossibleNode = MazeGen->ShortestNodeToTarget(this->GetLastNodeCoords(), Target->GetNodePosition(), -(this->GetLastValidDirection()));
@@ -35,6 +47,7 @@ void AClyde::SetGhostTarget()
 			ExitRespawnState();
 			
 		}
+
 
 	}
 
@@ -87,6 +100,9 @@ void AClyde::SetGhostTarget()
 void AClyde::BeginPlay()
 {
 	AGhostPawn::BeginPlay();
+
+	//Start moving when 90 point are reached
+	CanMove = false;
 
 	ClydeScatterNodeCoord = FVector2D(2, 0);
 

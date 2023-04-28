@@ -24,6 +24,7 @@ public:
 
 	virtual void BeginPlay() override;
 
+	FVector2D InkySpawn = FVector2D(17, 12);
 
 private:
 
@@ -31,6 +32,5 @@ private:
 
 	APacManNode* InkyScatterNode;
 
-	FVector2D InkySpawn = FVector2D(23, 3);
 
 };
