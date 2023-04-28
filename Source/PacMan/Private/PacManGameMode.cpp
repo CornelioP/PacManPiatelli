@@ -69,7 +69,7 @@ void APacManGameMode::EnterFrightenedMode()
 
 	EStates = Frightened;
 
-	GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, FString::Printf(TEXT("ENTRATO IN STATO FRIGHTENED")));
+	//GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, FString::Printf(TEXT("ENTRATO IN STATO FRIGHTENED")));
 
 	//Initialize timer 
 	float FrightenedTime = 6.0;
@@ -92,7 +92,7 @@ void APacManGameMode::EnterFrightenedMode()
 
 void APacManGameMode::FrightenedExit()
 {
-	GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, FString::Printf(TEXT("USCITO STATO FRIGHTENED")));
+	//GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, FString::Printf(TEXT("USCITO STATO FRIGHTENED")));
 
 	//Back to the last state
 	if (LastState == 0)
@@ -113,7 +113,7 @@ void APacManGameMode::FrightenedExit()
 void APacManGameMode::EnterChaseMode()
 {
 
-	GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, FString::Printf(TEXT("ENTRATO STATO CHASE")));
+	//GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, FString::Printf(TEXT("ENTRATO STATO CHASE")));
 
 	//Increment Chase Counter
 
@@ -155,7 +155,7 @@ void APacManGameMode::ChaseExit()
 void APacManGameMode::EnterScatterMode()
 {
 
-	GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, FString::Printf(TEXT("ENTRATO STATO SCATTER")));
+	//GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, FString::Printf(TEXT("ENTRATO STATO SCATTER")));
 
 	//Increment Scatter Counter
 	
@@ -266,7 +266,7 @@ void APacManGameMode::EnterSpawnState()
 	float SpawnTime = 2;
 	GetWorld()->GetTimerManager().SetTimer(SpawnStateTimer, this, &APacManGameMode::ExitSpawnState, SpawnTime, false);
 
-		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, FString::Printf(TEXT("ENTRATO STATO SPAWN")));
+		//GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, FString::Printf(TEXT("ENTRATO STATO SPAWN")));
 
 }
 

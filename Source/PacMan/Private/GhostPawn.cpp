@@ -60,7 +60,7 @@ void AGhostPawn::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* Oth
 		if (GameMode->EStates == Frightened)
 		{
 			PacMan->Eat(this);
-			PacMan->PointCounterUI += 200;
+			//PacMan->PointCounterUI += 200;
 
 			APacManNode* EnterNode1 = *(MazeGen->TileMap.Find(FVector2D(19, 13)));
 			APacManNode* EnterNode2 = *(MazeGen->TileMap.Find(FVector2D(19, 14)));
@@ -285,7 +285,7 @@ void AGhostPawn::MoveAgain()
 	EnterNode1->EIsLegal = Walkable;
 	EnterNode2->EIsLegal = Walkable;
 
-	GetWorld()->GetTimerManager().SetTimer(GhostRestartTimer, this, &AGhostPawn::ExitSpawnStateGhost, 1.0f, false);
+	GetWorld()->GetTimerManager().SetTimer(GhostRestartTimer, this, &AGhostPawn::ExitSpawnStateGhost, 2.0f, false);
 }
 
 

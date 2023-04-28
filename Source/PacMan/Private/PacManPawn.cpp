@@ -57,7 +57,7 @@ void APacManPawn::HandleMovement()
 
 	//if (TargetNode == GhostNode)
 	//{
-		//GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, FString::Printf(TEXT("FUNZIONA PORCODIO ?????")));
+		//GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, FString::Printf(TEXT("FUNZIONA")));
 		//SetTargetNode(nullptr);
 		//SetNextNode(nullptr);
 
@@ -212,7 +212,7 @@ void APacManPawn::SpawnFruit()
 
 	 FVector Position = MazeGen->GetRelativeLocationByXYPosition(Randx,Randy);
 
-	 Spawnable = MazeGen->IsNodeValidForWalk(SpawnFruitNode);
+	 Spawnable = MazeGen->IsNodeValidForWalkPacMan(SpawnFruitNode);
 
 	 Position.X += 50;
 	 Position.Y += 50;

@@ -58,27 +58,6 @@ private:
 		TSubclassOf<APacManNode> LabyrinthNode;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Nodes")
-		TSubclassOf<APacManNode> NullNode;
-
-	UPROPERTY(EditDefaultsOnly, Category = "Nodes")
-		TSubclassOf<APacManNode> CharacterNode;
-
-	UPROPERTY(EditDefaultsOnly, Category = "Ghosts")
-		TSubclassOf<APacManNode> BlinkyNode;
-
-	UPROPERTY(EditDefaultsOnly, Category = "Ghosts")
-		TSubclassOf<APacManNode> PinkyNode;
-
-	UPROPERTY(EditDefaultsOnly, Category = "Ghosts")
-		TSubclassOf<APacManNode> InkyNode;
-
-	UPROPERTY(EditDefaultsOnly, Category = "Ghosts")
-		TSubclassOf<APacManNode> ClydeNode;
-
-	UPROPERTY(EditDefaultsOnly, Category = "Nodes")
-		TSubclassOf<APacManNode> GhostRespawnNode;
-
-	UPROPERTY(EditDefaultsOnly, Category = "Nodes")
 		TSubclassOf<APacManNode> TeleportNode;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Nodes")
@@ -86,9 +65,6 @@ private:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Nodes")
 		TSubclassOf<APacManNode> InvisibleWallNode;
-
-	UPROPERTY(EditDefaultsOnly, Category = "Nodes")
-		TSubclassOf<APacManNode> GhostExitNode;
 
 	UPROPERTY(EditDefaultsOnly)
 		FVector SpawnOffset;

@@ -9,19 +9,16 @@ constexpr int MapSizeY = 29;
 
 // # - Wall
 // B - Big Point
-// N - Empty
+//   - Empty
 // o - Point
 //     Phantom:
 //     - 1 - Blinky
 //     - 2 - Pinky
 //     - 3 - Inky
 //     - 4 - Clyde
-//    
-// C - Cherry
-// R - Ghost Respawn
+//   
 // N - Ghost Area
 // I - Invisible Not Walkable
-// E - Ghost Exit
 
 static char Map[MapSizeX][MapSizeY] = {
 
@@ -40,7 +37,7 @@ static char Map[MapSizeX][MapSizeY] = {
 	"#oooooooooooo##oooooooooooo#",
 	"######o## ######## ##o######",
 	"######o## ######## ##o######",
-	"######o## 12 RE 34 ##o######",
+	"######o##          ##o######",
 	"######o## ######## ##o######",
 	"######o## #IIIIII# ##o######",
 	"T     o   #IIIIII#   o     T",
@@ -123,15 +120,8 @@ APacManNode* AMazeGenerator::SpawnNodeActorById(char CharId, FVector Position) c
 	{
 	case '#': ClassToSpawn = WallNode; break;
 	case 'B': ClassToSpawn = PowerNode; break;
-	case '1': ClassToSpawn = BlinkyNode; break;
-	case '2': ClassToSpawn = PinkyNode; break;
-	case '3': ClassToSpawn = InkyNode; break;
-	case '4': ClassToSpawn = ClydeNode; break;
-	case 'R': ClassToSpawn = GhostRespawnNode; break;
 	case 'T': ClassToSpawn = TeleportNode; break;
-	case 'N': ClassToSpawn = GhostAreaNode; break;
 	case 'I': ClassToSpawn = InvisibleWallNode; break;
-	case 'E': ClassToSpawn = GhostExitNode; break;
 	case 'o': ClassToSpawn = PointNode; break;
 	default: ClassToSpawn = LabyrinthNode; break;
 	}
